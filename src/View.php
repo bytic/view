@@ -3,16 +3,21 @@
 namespace Nip;
 
 use Nip\View\Traits\HasDataTrait;
+use Nip\View\Traits\HasExtensionsTrait;
 use Nip\View\Traits\HasHelpersTrait;
+use Nip\View\Traits\HasMethodsTrait;
+use Nip\View\ViewInterface;
 
 /**
  * Class View
  *
  */
-class View
+class View implements ViewInterface
 {
     use HasDataTrait;
     use HasHelpersTrait;
+    use HasExtensionsTrait;
+    use HasMethodsTrait;
 
     protected $request = null;
 
