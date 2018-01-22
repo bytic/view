@@ -4,8 +4,55 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "403dc24d4e7a5f1bc2763af4721dd784",
-    "packages": [],
+    "content-hash": "b1aff0c8cd64f8de5763e409ee11c95e",
+    "packages": [
+        {
+            "name": "bytic/collections",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ByTIC/Collections.git",
+                "reference": "cec77b01cf8077956c999078261d08b24d6bfe81"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ByTIC/Collections/zipball/cec77b01cf8077956c999078261d08b24d6bfe81",
+                "reference": "cec77b01cf8077956c999078261d08b24d6bfe81",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "^0.9",
+                "phpunit/phpunit": "^6.2",
+                "squizlabs/php_codesniffer": "^3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Nip\\Collections\\": "src"
+                },
+                "classmap": [
+                    "src"
+                ],
+                "files": []
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Gabriel Solomon",
+                    "email": "hello@gabrielsolomon.ro"
+                }
+            ],
+            "description": "Php Framework",
+            "homepage": "https://github.com/ByTIC/collections",
+            "time": "2018-01-22T16:25:24+00:00"
+        }
+    ],
     "packages-dev": [
         {
             "name": "doctrine/instantiator",
