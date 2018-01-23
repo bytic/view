@@ -23,6 +23,20 @@ class ViewTest extends AbstractTest
         self::assertEquals($parameters, $view->methodTest(...$parameters));
     }
 
+    public function testGetDoctypeHelper()
+    {
+        $view = new View();
+
+        $helper = $view->Doctype();
+
+        self::assertInstanceOf(View\Helpers\DoctypeHelper::class, $helper);
+        self::assertSame(
+            '<!DOCTYPE html>',
+            $helper->render()
+        );
+    }
+
+
 //    public function testGetHelperClass()
 //    {
 //        $view = new View();

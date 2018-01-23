@@ -55,7 +55,7 @@ class MethodCall
     /**
      * @return string
      */
-    public function getMethod()
+    public function getName()
     {
         return $this->method;
     }

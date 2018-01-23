@@ -2,9 +2,9 @@
 
 namespace Nip;
 
+use Nip\View\Extensions\Helpers\HasHelpersTrait;
 use Nip\View\Traits\HasDataTrait;
 use Nip\View\Traits\HasExtensionsTrait;
-use Nip\View\Traits\HasHelpersTrait;
 use Nip\View\Traits\HasMethodsTrait;
 use Nip\View\Traits\MethodsOverloadingTrait;
 use Nip\View\ViewInterface;
@@ -16,8 +16,8 @@ use Nip\View\ViewInterface;
 class View implements ViewInterface
 {
     use HasDataTrait;
-    use HasHelpersTrait;
     use HasExtensionsTrait;
+    use HasHelpersTrait;
     use HasMethodsTrait;
     use MethodsOverloadingTrait;
 
@@ -28,6 +28,7 @@ class View implements ViewInterface
     public function __construct()
     {
         $this->addMethodsPipelineStage();
+        $this->addHelpersExtension();
     }
 
     /**

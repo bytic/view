@@ -2,8 +2,11 @@
 
 namespace Nip\View\Extensions\Helpers;
 
+use Nip\View;
 use Nip\View\Extensions\AbstractExtension;
-use Nip\View\Traits\HasExtensionsTrait;
+use Nip\View\Helpers\HelpersCollection;
+use Nip\View\Traits\HasMethodsTrait;
+use Nip\View\Traits\MethodsOverloadingTrait;
 use Nip\View\ViewInterface;
 
 /**
@@ -14,11 +17,20 @@ class HelpersExtension extends AbstractExtension
 {
 
     /**
-     * @param ViewInterface|HasExtensionsTrait $view
-     * @return mixed
+     * @param ViewInterface|MethodsOverloadingTrait|HasMethodsTrait|View $view
+     * @return void
      */
     public function register(ViewInterface $view)
     {
-        // TODO: Implement register() method.
+        $view->getCallPipelineBuilder()->add(new HelpersPipelineStage());
+        HelpersCollection::getInstance()->setEngine($view);
+
+        $view->addMethod('getHelper', function ($name) {
+            return HelpersCollection::getInstance()->getHelper($name);
+        });
+
+        $view->addMethod('hasHelper', function ($name) {
+            return HelpersCollection::getInstance()->hasHelper($name);
+        });
     }
 }

@@ -9,31 +9,18 @@ use Nip\View\Methods\Pipeline\MethodCall;
  * Class MethodCollectionStage
  * @package Nip\View\Methods\Pipeline\Stages
  */
-class MethodCollectionStage implements StageInterface
+class MethodCollectionStage extends AbstractStage
 {
-
-    /**
-     * @param MethodCall $methodCall
-     * @return MethodCall
-     */
-    public function __invoke(MethodCall $methodCall): MethodCall
-    {
-        $return = $this->callEngineMethods($methodCall);
-        if ($return !== null) {
-            $methodCall->setReturn($return);
-        }
-        return $methodCall;
-    }
 
     /**
      * @param MethodCall $methodCall
      * @return mixed
      */
-    public function callEngineMethods(MethodCall $methodCall)
+    public function processMethod(MethodCall $methodCall)
     {
         $methodsCollection = $this->getMethodsCollection($methodCall);
-        if ($methodsCollection->has($methodCall->getMethod())) {
-            return $methodsCollection->run($methodCall->getMethod(), $methodCall->getArgs());
+        if ($methodsCollection->has($methodCall->getName())) {
+            return $methodsCollection->run($methodCall->getName(), $methodCall->getArgs());
         }
         return null;
     }
