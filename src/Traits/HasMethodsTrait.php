@@ -4,6 +4,7 @@ namespace Nip\View\Traits;
 
 use Closure;
 use Nip\View\Methods\MethodsCollection;
+use Nip\View\Methods\Pipeline\Stages\MethodCollectionStage;
 
 /**
  * Trait HasMethodsTrait
@@ -14,17 +15,9 @@ trait HasMethodsTrait
 
     protected $engineMethods = null;
 
-    /**
-     * @param $method
-     * @param array $args
-     * @return mixed
-     */
-    public function __call($method, array $args)
+    public function addMethodsPipelineStage()
     {
-        if ($this->getEngineMethods()->has($method)) {
-            return $this->getEngineMethods()->run($method, $args);
-        }
-        throw new \BadMethodCallException("No method {$method} found for engine.");
+        $this->addCallPipeline(new MethodCollectionStage());
     }
 
     /**

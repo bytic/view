@@ -6,6 +6,7 @@ use Nip\View\Traits\HasDataTrait;
 use Nip\View\Traits\HasExtensionsTrait;
 use Nip\View\Traits\HasHelpersTrait;
 use Nip\View\Traits\HasMethodsTrait;
+use Nip\View\Traits\MethodsOverloadingTrait;
 use Nip\View\ViewInterface;
 
 /**
@@ -18,10 +19,16 @@ class View implements ViewInterface
     use HasHelpersTrait;
     use HasExtensionsTrait;
     use HasMethodsTrait;
+    use MethodsOverloadingTrait;
 
     protected $helpers = [];
     protected $blocks = [];
     protected $basePath = null;
+
+    public function __construct()
+    {
+        $this->addMethodsPipelineStage();
+    }
 
     /**
      * @param $name
