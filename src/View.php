@@ -19,8 +19,6 @@ class View implements ViewInterface
     use HasExtensionsTrait;
     use HasMethodsTrait;
 
-    protected $request = null;
-
     protected $helpers = [];
     protected $blocks = [];
     protected $basePath = null;
@@ -181,21 +179,5 @@ class View implements ViewInterface
         }
 
         return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getRequest()
-    {
-        return $this->request;
-    }
-
-    /**
-     * @param mixed $request
-     */
-    public function setRequest($request)
-    {
-        $this->request = $request;
     }
 }
