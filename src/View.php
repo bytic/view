@@ -60,10 +60,11 @@ class View implements ViewInterface
     protected function buildPath($view)
     {
         if ($view[0] == '/') {
+//        var_dump($this->getBasePath().ltrim($view, "/").'.php'); die();
             return $this->getBasePath().ltrim($view, "/").'.php';
         } else {
             $backtrace = debug_backtrace();
-            $caller = $backtrace[3]['file'];
+            $caller = $backtrace[2]['file'];
 
             return dirname($caller)."/".$view.".php";
         }
