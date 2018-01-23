@@ -29,7 +29,6 @@ use Nip\View\Helpers\DoctypeHelper;
  */
 trait HasHelpersTrait
 {
-
     public function addHelpersExtension()
     {
         $this->register(new HelpersExtension());

@@ -12,7 +12,6 @@ use Nip\View\Methods\Pipeline\Stages\MethodCollectionStage;
  */
 trait HasMethodsTrait
 {
-
     protected $engineMethods = null;
 
     public function addMethodsPipelineStage()

@@ -8,5 +8,4 @@ namespace Nip\View;
  */
 interface ViewInterface
 {
-
 }

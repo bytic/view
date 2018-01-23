@@ -10,5 +10,4 @@ use League\Pipeline\PipelineBuilder;
  */
 class MethodsPipelineBuilder extends PipelineBuilder
 {
-
 }
