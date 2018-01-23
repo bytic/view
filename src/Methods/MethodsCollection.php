@@ -10,4 +10,14 @@ use Nip\Collections\AbstractCollection;
  */
 class MethodsCollection extends AbstractCollection
 {
+    /**
+     * @param $method
+     * @param $args
+     * @return mixed
+     */
+    public function run($method, $args)
+    {
+        $methodClosure = $this->get($method);
+        return $methodClosure(...$args);
+    }
 }

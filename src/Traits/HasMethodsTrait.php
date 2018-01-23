@@ -2,6 +2,7 @@
 
 namespace Nip\View\Traits;
 
+use Closure;
 use Nip\View\Methods\MethodsCollection;
 
 /**
@@ -13,11 +14,15 @@ trait HasMethodsTrait
 
     protected $engineMethods = null;
 
+    /**
+     * @param $method
+     * @param array $args
+     * @return mixed
+     */
     public function __call($method, array $args)
     {
-        $methods = $this->container->get('engine_methods');
-        if (isset($methods[$method])) {
-            return $methods[$method]($this, ...$args);
+        if ($this->getEngineMethods()->has($method)) {
+            return $this->getEngineMethods()->run($method, $args);
         }
         throw new \BadMethodCallException("No method {$method} found for engine.");
     }
@@ -30,6 +35,7 @@ trait HasMethodsTrait
         if ($this->engineMethods === null) {
             $this->initEngineMethods();
         }
+
         return $this->engineMethods;
     }
 
@@ -43,16 +49,21 @@ trait HasMethodsTrait
 
     /**
      * @param $name
-     * @param $callable
+     * @param Closure $callable
      */
-    public function addMethod($name, $callable)
+    public function addMethod($name, Closure $callable)
     {
-        $this->getEngineMethods()->add($name, $callable);
+        $this->getEngineMethods()->set($name, $callable);
     }
 
+    /**
+     * @param Closure[] $methods
+     */
     public function addMethods(array $methods)
     {
-        $this->getEngineMethods()->merge('engine_methods', $methods);
+        foreach ($methods as $name => $closure) {
+            $this->addMethod($name, $closure);
+        }
     }
 
     protected function initEngineMethods()

@@ -27,22 +27,6 @@ class View implements ViewInterface
 
     /**
      * @param $name
-     * @param $arguments
-     * @return mixed|null
-     */
-    public function __call($name, $arguments)
-    {
-        if ($name === ucfirst($name)) {
-            return $this->getHelper($name);
-        } else {
-            trigger_error("Call to undefined method $name", E_USER_ERROR);
-        }
-
-        return null;
-    }
-
-    /**
-     * @param $name
      * @param $block
      */
     public function setBlock($name, $block)
