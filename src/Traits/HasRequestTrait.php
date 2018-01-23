@@ -8,7 +8,6 @@ namespace Nip\View\Traits;
  */
 trait HasRequestTrait
 {
-
     protected $request = null;
 
     /**
