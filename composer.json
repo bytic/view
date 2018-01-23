@@ -27,6 +27,7 @@
   },
   "require": {
     "php": "^7.0",
+    "bytic/container": "^1.0",
     "bytic/collections": "^1.0",
     "league/pipeline": "^0.3.0"
   },
