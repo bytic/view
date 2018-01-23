@@ -10,7 +10,6 @@ use Nip\View;
  */
 class ViewTest extends AbstractTest
 {
-
     public function testHasMethods()
     {
         $view = new View();
