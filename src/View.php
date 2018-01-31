@@ -6,8 +6,8 @@ use Nip\View\Extensions\Helpers\HasHelpersTrait;
 use Nip\View\Traits\HasDataTrait;
 use Nip\View\Traits\HasExtensionsTrait;
 use Nip\View\Traits\HasMethodsTrait;
+use Nip\View\Traits\HasPathsTrait;
 use Nip\View\Traits\MethodsOverloadingTrait;
-use Nip\View\Utilities\Backtrace;
 use Nip\View\ViewInterface;
 
 /**
@@ -20,11 +20,11 @@ class View implements ViewInterface
     use HasExtensionsTrait;
     use HasHelpersTrait;
     use HasMethodsTrait;
+    use HasPathsTrait;
     use MethodsOverloadingTrait;
 
     protected $helpers = [];
     protected $blocks = [];
-    protected $basePath = null;
 
     public function __construct()
     {
@@ -39,74 +39,6 @@ class View implements ViewInterface
     public function setBlock($name, $block)
     {
         $this->blocks[$name] = $block;
-    }
-
-    /**
-     * @param $view
-     * @return bool
-     */
-    public function existPath($view)
-    {
-        return is_file($this->buildPath($view));
-    }
-
-    /**
-     * Builds path for including
-     * If $view starts with / the path will be relative to the root of the views folder.
-     * Otherwise to caller file location.
-     *
-     * @param string $view
-     * @return string
-     */
-    protected function buildPath($view)
-    {
-        if ($view[0] == '/') {
-            return $this->getBasePath().ltrim($view, "/").'.php';
-        } else {
-            $caller = Backtrace::getViewOrigin();
-            return dirname($caller)."/".$view.".php";
-        }
-    }
-
-    /**
-     * @return string
-     */
-    public function getBasePath()
-    {
-        if ($this->basePath === null) {
-            $this->initBasePath();
-        }
-
-        return $this->basePath;
-    }
-
-    /**
-     * @param string $path
-     * @return $this
-     */
-    public function setBasePath($path)
-    {
-        $path = rtrim($path, DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR;
-        $this->basePath = $path;
-
-        return $this;
-    }
-
-    protected function initBasePath()
-    {
-        $this->setBasePath($this->generateBasePath());
-    }
-
-    /**
-     * @return string
-     */
-    protected function generateBasePath()
-    {
-        if (defined('VIEWS_PATH')) {
-            return VIEWS_PATH;
-        }
-
-        return false;
     }
 
     /**
