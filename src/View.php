@@ -7,6 +7,7 @@ use Nip\View\Traits\HasDataTrait;
 use Nip\View\Traits\HasExtensionsTrait;
 use Nip\View\Traits\HasMethodsTrait;
 use Nip\View\Traits\MethodsOverloadingTrait;
+use Nip\View\Utilities\Backtrace;
 use Nip\View\ViewInterface;
 
 /**
@@ -60,12 +61,9 @@ class View implements ViewInterface
     protected function buildPath($view)
     {
         if ($view[0] == '/') {
-//        var_dump($this->getBasePath().ltrim($view, "/").'.php'); die();
             return $this->getBasePath().ltrim($view, "/").'.php';
         } else {
-            $backtrace = debug_backtrace();
-            $caller = $backtrace[2]['file'];
-
+            $caller = Backtrace::getViewOrigin();
             return dirname($caller)."/".$view.".php";
         }
     }
