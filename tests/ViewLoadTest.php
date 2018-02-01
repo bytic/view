@@ -2,6 +2,7 @@
 
 namespace Nip\View\Tests;
 
+use InvalidArgumentException;
 use Nip\View;
 use Nip\View\Tests\Fixtures\App\View as FixturesView;
 
@@ -34,6 +35,18 @@ class ViewLoadTest extends AbstractTest
 
         $content = $view->getContents('/modules/footer');
         self::assertEquals('FOOTER', $content);
+    }
+
+    public function testLoadNamespacePath()
+    {
+        $view = $this->generateView();
+        $view->addPath(TEST_FIXTURE_PATH . '/views_template', 'template');
+
+        $content = $view->getContents('template::/modules/header');
+        self::assertEquals('TITLE TEMPLATE', $content);
+
+        self::expectException(InvalidArgumentException::class);
+        $view->getContents('template::/modules/footer');
     }
 
     public function testLoadFromInheritedView()

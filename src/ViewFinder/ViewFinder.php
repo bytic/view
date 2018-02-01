@@ -32,11 +32,12 @@ class ViewFinder implements ViewFinderInterface
      */
     public function find($name)
     {
-        if ($this->isRelativeView($name)) {
-            return $this->findRelativePathView($name);
+        list($namespace, $view) = $this->parseName($name);
+
+        if ($this->isRelativeView($view)) {
+            return $this->findRelativePathView($view);
         }
 
-        list($namespace, $view) = $this->parseName($name);
         return $this->findNamespacedView($view, $namespace);
     }
 
@@ -91,8 +92,8 @@ class ViewFinder implements ViewFinderInterface
         if (count($segments) != 2) {
             throw new InvalidArgumentException("View [$name] has an invalid name.");
         }
-        if (!isset($this->paths[$segments[0]])) {
-            throw new InvalidArgumentException("No hint path defined for [{$segments[0]}].");
+        if (!isset($this->paths[$segments[0]]) || count($this->paths[$segments[0]]) < 1) {
+            throw new InvalidArgumentException("No path defined for namespace [{$segments[0]}].");
         }
         return $segments;
     }
