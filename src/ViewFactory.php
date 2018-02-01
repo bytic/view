@@ -8,9 +8,7 @@ namespace Nip\View;
  */
 class ViewFactory
 {
-
     public function create()
     {
     }
-
 }
