@@ -17,6 +17,46 @@ trait HasViewFinder
      */
     protected $finder = null;
 
+
+    /**
+     * Adds a path where templates are stored.
+     *
+     * @param string $path A path where to look for templates
+     * @param string $namespace A path namespace
+     *
+     * @return void
+     */
+    public function addPath($path, $namespace = ViewFinderInterface::MAIN_NAMESPACE)
+    {
+        $this->getFinder()->addPath($path, $namespace);
+    }
+
+    /**
+     * Prepends a path where templates are stored.
+     *
+     * @param string $path A path where to look for templates
+     * @param string $namespace A path namespace
+     * @return void
+     */
+    public function prependPath($path, $namespace = ViewFinderInterface::MAIN_NAMESPACE)
+    {
+        $this->getFinder()->prependPath($path, $namespace);
+    }
+
+    /**
+     * @param $view
+     * @return bool
+     */
+    public function existPath($view)
+    {
+        try {
+            $this->getFinder()->find($view);
+        } catch (InvalidArgumentException $exception) {
+            return false;
+        }
+        return true;
+    }
+
     /**
      * Get the view finder instance.
      *
@@ -46,19 +86,5 @@ trait HasViewFinder
     public function setFinder(ViewFinderInterface $finder)
     {
         $this->finder = $finder;
-    }
-
-    /**
-     * @param $view
-     * @return bool
-     */
-    public function existPath($view)
-    {
-        try {
-            $this->getFinder()->find($view);
-        } catch (InvalidArgumentException $exception) {
-            return false;
-        }
-        return true;
     }
 }

@@ -20,6 +20,22 @@ class ViewLoadTest extends AbstractTest
         self::assertEquals('TITLE', $content);
     }
 
+    public function testLoadFromMultiplePath()
+    {
+        $view = $this->generateView();
+
+        $content = $view->getContents('/modules/header');
+        self::assertEquals('TITLE', $content);
+
+        $view->prependPath(TEST_FIXTURE_PATH . '/views_template');
+
+        $content = $view->getContents('/modules/header');
+        self::assertEquals('TITLE TEMPLATE', $content);
+
+        $content = $view->getContents('/modules/footer');
+        self::assertEquals('FOOTER', $content);
+    }
+
     public function testLoadFromInheritedView()
     {
         $view = new FixturesView();
