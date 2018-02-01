@@ -22,11 +22,15 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "Nip\\View\\Tests\\": "tests/"
+      "Nip\\View\\Tests\\": "tests/",
+      "Nip\\View\\Tests\\Fixtures\\App": "tests/fixtures/app"
     }
   },
   "require": {
-    "php": "^7.0"
+    "php": "^7.0",
+    "bytic/container": "^1.0",
+    "bytic/collections": "^1.0",
+    "league/pipeline": "^0.3.0"
   },
   "require-dev": {
     "squizlabs/php_codesniffer": "^3.0",
