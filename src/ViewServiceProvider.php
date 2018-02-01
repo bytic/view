@@ -23,6 +23,7 @@ class ViewServiceProvider extends AbstractServiceProvider
 
     public function registerFactory()
     {
+
     }
 
 

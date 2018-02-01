@@ -1,0 +1,64 @@
+<?php
+
+namespace Nip\View\ViewFinder;
+
+use InvalidArgumentException;
+
+/**
+ * Trait HasViewFinder
+ * @package Nip\View\ViewFinder
+ */
+trait HasViewFinder
+{
+    /**
+     * The view finder implementation.
+     *
+     * @var ViewFinderInterface
+     */
+    protected $finder = null;
+
+    /**
+     * Get the view finder instance.
+     *
+     * @return ViewFinderInterface|ViewFinder
+     */
+    public function getFinder()
+    {
+        if ($this->finder === null) {
+            $this->initFinder();
+        }
+        return $this->finder;
+    }
+
+    public function initFinder()
+    {
+        $finder = new ViewFinder();
+        $finder->addPath($this->getBasePath());
+        $this->setFinder($finder);
+    }
+
+    /**
+     * Set the view finder instance.
+     *
+     * @param  ViewFinderInterface $finder
+     * @return void
+     */
+    public function setFinder(ViewFinderInterface $finder)
+    {
+        $this->finder = $finder;
+    }
+
+    /**
+     * @param $view
+     * @return bool
+     */
+    public function existPath($view)
+    {
+        try {
+            $this->getFinder()->find($view);
+        } catch (InvalidArgumentException $exception) {
+            return false;
+        }
+        return true;
+    }
+}

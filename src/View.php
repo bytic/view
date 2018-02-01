@@ -8,6 +8,7 @@ use Nip\View\Traits\HasExtensionsTrait;
 use Nip\View\Traits\HasMethodsTrait;
 use Nip\View\Traits\HasPathsTrait;
 use Nip\View\Traits\MethodsOverloadingTrait;
+use Nip\View\ViewFinder\HasViewFinder;
 use Nip\View\ViewInterface;
 
 /**
@@ -21,6 +22,7 @@ class View implements ViewInterface
     use HasHelpersTrait;
     use HasMethodsTrait;
     use HasPathsTrait;
+    use HasViewFinder;
     use MethodsOverloadingTrait;
 
     protected $helpers = [];
@@ -30,6 +32,7 @@ class View implements ViewInterface
     {
         $this->addMethodsPipelineStage();
         $this->addHelpersExtension();
+        $this->initFinder();
     }
 
     /**
@@ -47,7 +50,7 @@ class View implements ViewInterface
     public function render($block = 'default')
     {
         if (!empty($this->blocks[$block])) {
-            $this->load("/".$this->blocks[$block]);
+            $this->load("/" . $this->blocks[$block]);
         } else {
             trigger_error("No $block block", E_USER_ERROR);
         }
@@ -82,7 +85,7 @@ class View implements ViewInterface
     {
         extract($variables);
 
-        $path = $this->buildPath($view);
+        $path = $this->getFinder()->find($view);
 
         unset($view, $variables);
         ob_start();
