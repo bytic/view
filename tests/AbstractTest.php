@@ -10,4 +10,9 @@ use PHPUnit\Framework\TestCase;
 abstract class AbstractTest extends TestCase
 {
     protected $object;
+
+    /**
+     * @var \UnitTester
+     */
+    protected $tester;
 }

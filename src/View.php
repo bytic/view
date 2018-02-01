@@ -2,176 +2,37 @@
 
 namespace Nip;
 
+use Nip\View\Extensions\Helpers\HasHelpersTrait;
+use Nip\View\Traits\HasDataTrait;
+use Nip\View\Traits\HasExtensionsTrait;
+use Nip\View\Traits\HasMethodsTrait;
+use Nip\View\Traits\HasPathsTrait;
+use Nip\View\Traits\MethodsOverloadingTrait;
+use Nip\View\ViewFinder\HasViewFinder;
+use Nip\View\ViewInterface;
+
 /**
  * Class View
  *
- * @method Helpers\View\Breadcrumbs Breadcrumbs()
- * @method Helpers\View\Doctype Doctype()
- * @method Helpers\View\Flash Flash()
- * @method Helpers\View\FacebookMeta FacebookMeta()
- * @method Helpers\View\GoogleAnalytics GoogleAnalytics()
- * @method Helpers\View\HTML HTML()
- * @method Helpers\View\Messages Messages()
- * @method Helpers\View\Meta Meta()
- * @method Helpers\View\Paginator Paginator()
- * @method Helpers\View\Scripts Scripts()
- * @method Helpers\View\Stylesheets Stylesheets()
- * @method Helpers\View\TinyMCE TinyMCE()
- * @method Helpers\View\Url Url()
- * @method Helpers\View\GoogleDFP GoogleDFP()
- *
  */
-class View
+class View implements ViewInterface
 {
-    protected $request = null;
+    use HasDataTrait;
+    use HasExtensionsTrait;
+    use HasHelpersTrait;
+    use HasMethodsTrait;
+    use HasPathsTrait;
+    use HasViewFinder;
+    use MethodsOverloadingTrait;
 
     protected $helpers = [];
-
-    protected $data = [];
     protected $blocks = [];
-    protected $basePath = null;
 
-    /**
-     * @param $name
-     * @param $arguments
-     * @return mixed|null
-     */
-    public function __call($name, $arguments)
+    public function __construct()
     {
-        if ($name === ucfirst($name)) {
-            return $this->getHelper($name);
-        } else {
-            trigger_error("Call to undefined method $name", E_USER_ERROR);
-        }
-
-        return null;
-    }
-
-    /**
-     * @param $name
-     * @return mixed
-     */
-    public function getHelper($name)
-    {
-        if (!isset($this->helpers[$name])) {
-            $this->initHelper($name);
-        }
-
-        return $this->helpers[$name];
-    }
-
-    /**
-     * @param $name
-     */
-    public function initHelper($name)
-    {
-        $this->helpers[$name] = $this->newHelper($name);
-    }
-
-    /**
-     * @param $name
-     * @return Helpers\View\AbstractHelper
-     */
-    public function newHelper($name)
-    {
-        $class = $this->getHelperClass($name);
-        $helper = new $class();
-        /** @var \Nip\Helpers\View\AbstractHelper $helper */
-        $helper->setView($this);
-
-        return $helper;
-    }
-
-    /**
-     * @param $name
-     * @return string
-     */
-    public function getHelperClass($name)
-    {
-        return '\Nip\Helpers\View\\'.$name;
-    }
-
-    /**
-     * @param $name
-     * @return mixed|null
-     */
-    public function __get($name)
-    {
-        return $this->get($name);
-    }
-
-    /**
-     * @param $name
-     * @param $value
-     * @return View
-     */
-    public function __set($name, $value)
-    {
-        return $this->set($name, $value);
-    }
-
-    /**
-     * @param  string $name
-     * @return mixed|null
-     */
-    public function get($name)
-    {
-        if ($this->has($name)) {
-            return $this->data[$name];
-        } else {
-            return null;
-        }
-    }
-
-    /**
-     * @param string $name
-     * @return bool
-     */
-    public function has($name)
-    {
-        return isset($this->data[$name]);
-    }
-
-    /**
-     * @param string $name
-     * @param mixed $value
-     * @return $this
-     */
-    public function set($name, $value)
-    {
-        $this->data[$name] = $value;
-
-        return $this;
-    }
-
-    /**
-     * @param $name
-     * @return bool
-     */
-    public function __isset($name)
-    {
-        return isset($this->data[$name]);
-    }
-
-    /**
-     * @param $name
-     */
-    public function __unset($name)
-    {
-        unset($this->data[$name]);
-    }
-
-    /**
-     * @param string $name
-     * @param string $appended
-     * @return View
-     */
-    public function append($name, $appended)
-    {
-        $value = $this->has($name) ? $this->get($name) : '';
-        $value .= $appended;
-
-        return $this->set($name, $value);
+        $this->addMethodsPipelineStage();
+        $this->addHelpersExtension();
+        $this->initFinder();
     }
 
     /**
@@ -184,82 +45,12 @@ class View
     }
 
     /**
-     * @param $view
-     * @return bool
-     */
-    public function existPath($view)
-    {
-        return is_file($this->buildPath($view));
-    }
-
-    /**
-     * Builds path for including
-     * If $view starts with / the path will be relative to the root of the views folder.
-     * Otherwise to caller file location.
-     *
-     * @param string $view
-     * @return string
-     */
-    protected function buildPath($view)
-    {
-        if ($view[0] == '/') {
-            return $this->getBasePath().ltrim($view, "/").'.php';
-        } else {
-            $backtrace = debug_backtrace();
-            $caller = $backtrace[3]['file'];
-
-            return dirname($caller)."/".$view.".php";
-        }
-    }
-
-    /**
-     * @return string
-     */
-    public function getBasePath()
-    {
-        if ($this->basePath === null) {
-            $this->initBasePath();
-        }
-
-        return $this->basePath;
-    }
-
-    /**
-     * @param string $path
-     * @return $this
-     */
-    public function setBasePath($path)
-    {
-        $path = rtrim($path, DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR;
-        $this->basePath = $path;
-
-        return $this;
-    }
-
-    protected function initBasePath()
-    {
-        $this->setBasePath($this->generateBasePath());
-    }
-
-    /**
-     * @return string
-     */
-    protected function generateBasePath()
-    {
-        if (defined('VIEWS_PATH')) {
-            return VIEWS_PATH;
-        }
-
-        return false;
-    }
-
-    /**
      * @param string $block
      */
     public function render($block = 'default')
     {
         if (!empty($this->blocks[$block])) {
-            $this->load("/".$this->blocks[$block]);
+            $this->load("/" . $this->blocks[$block]);
         } else {
             trigger_error("No $block block", E_USER_ERROR);
         }
@@ -294,7 +85,7 @@ class View
     {
         extract($variables);
 
-        $path = $this->buildPath($view);
+        $path = $this->getFinder()->find($view);
 
         unset($view, $variables);
         ob_start();
@@ -330,21 +121,5 @@ class View
         }
 
         return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getRequest()
-    {
-        return $this->request;
-    }
-
-    /**
-     * @param mixed $request
-     */
-    public function setRequest($request)
-    {
-        $this->request = $request;
     }
 }
