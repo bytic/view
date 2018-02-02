@@ -85,7 +85,7 @@ class View implements ViewInterface
     {
         extract($variables);
 
-        $path = $this->getFinder()->find($view);
+        $path = $this->buildPath($view);
 
         unset($view, $variables);
         ob_start();
@@ -95,6 +95,19 @@ class View implements ViewInterface
         ob_end_clean();
 
         return $html;
+    }
+
+    /**
+     * Builds path for including
+     * If $view starts with / the path will be relative to the root of the views folder.
+     * Otherwise to caller file location.
+     *
+     * @param string $view
+     * @return string
+     */
+    public function buildPath($view)
+    {
+        return $this->getFinder()->find($view);
     }
 
     /**
