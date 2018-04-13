@@ -45,6 +45,9 @@ class ViewLoadTest extends AbstractTest
         $content = $view->getContents('template::/modules/header');
         self::assertEquals('TITLE TEMPLATE', $content);
 
+        $content = $view->getContents('template::modules/header');
+        self::assertEquals('TITLE TEMPLATE', $content);
+
         self::expectException(InvalidArgumentException::class);
         $view->getContents('template::/modules/footer');
     }

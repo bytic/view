@@ -34,7 +34,7 @@ class ViewFinder implements ViewFinderInterface
     {
         list($namespace, $view) = $this->parseName($name);
 
-        if ($this->isRelativeView($view)) {
+        if ($namespace == self::MAIN_NAMESPACE && $this->isRelativeView($view)) {
             return $this->findRelativePathView($view);
         }
 
