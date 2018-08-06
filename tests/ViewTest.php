@@ -2,7 +2,7 @@
 
 namespace Nip\View\Tests;
 
-use Nip\View;
+use Nip\View\View;
 
 /**
  * Class ViewTest
@@ -41,8 +41,9 @@ class ViewTest extends \Nip\View\Tests\AbstractTest
     {
         $view = new View();
 
-        static::assertInstanceOf('Nip\View', $view->Messages()->getView());
-        static::assertInstanceOf('Nip\View', $view->Paginator()->getView());
-        static::assertInstanceOf('Nip\View', $view->Scripts()->getView());
+        static::assertInstanceOf(View::class, $view->Messages()->getView());
+        static::assertInstanceOf(View::class, $view->Paginator()->getView());
+        static::assertInstanceOf(View::class, $view->Scripts()->getView());
+        static::assertInstanceOf(View::class, $view->Stylesheets()->getView());
     }
 }
