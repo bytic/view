@@ -6,14 +6,15 @@ use Nip\View;
 
 class XML extends View
 {
-    public function load($view = false, $variables = array(), $return = false)
+    public function load($view = false, $variables = [], $return = false)
     {
         header('Content-type: text/xml');
+
         return parent::load($view, $variables, $return);
     }
 
     /**
-     * Singleton
+     * Singleton.
      *
      * @return self
      */
@@ -23,6 +24,7 @@ class XML extends View
         if (!($instance instanceof self)) {
             $instance = new self();
         }
+
         return $instance;
     }
 }
