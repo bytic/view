@@ -8,5 +8,4 @@ namespace Nip\View\Tests\Fixtures\App;
  */
 class View extends \Nip\View
 {
-
 }
