@@ -149,11 +149,25 @@ class View implements ViewInterface
         if ($view[0] == '/') {
             return $this->getBasePath().ltrim($view, "/").'.php';
         } else {
-            $backtrace = debug_backtrace();
-            $caller = $backtrace[3]['file'];
+            $caller = $this->getLastViewCaller();
 
             return dirname($caller)."/".$view.".php";
         }
+    }
+
+    /**
+     * @return string|null
+     */
+    protected function getLastViewCaller()
+    {
+        $backtrace = debug_backtrace();
+        foreach ($backtrace as $call) {
+            if ($call['function'] == 'load') {
+                return $call['file'];
+            }
+        }
+
+        return null;
     }
 
     /**
