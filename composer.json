@@ -29,9 +29,9 @@
   },
   "require": {
     "php": "^7.0",
-    "bytic/container": "^0.9",
+    "bytic/container": "^1.0",
     "bytic/collections": "^1.0",
-    "bytic/helpers": "^0.9",
+    "bytic/helpers": "^1.0",
     "bytic/pipeline": "^1.0"
   },
   "require-dev": {
