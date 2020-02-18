@@ -2,9 +2,6 @@
 
 namespace Nip\View;
 
-use Nip\View\Traits\HasDataTrait;
-use Nip\View\Traits\HasHelpersTrait;
-
 use Nip\View\Extensions\Helpers\HasHelpersTrait;
 use Nip\View\Traits\HasDataTrait;
 use Nip\View\Traits\HasExtensionsTrait;

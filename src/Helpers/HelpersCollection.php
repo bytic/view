@@ -3,7 +3,7 @@
 namespace Nip\View\Helpers;
 
 use Nip\Collections\AbstractCollection;
-use Nip\View;
+use Nip\View\View;
 use Nip\View\Extensions\Helpers\HelperNotFoundException;
 
 /**

@@ -2,7 +2,7 @@
 
 namespace Nip\View\Helpers;
 
-use Nip\View;
+use Nip\View\View;
 
 /**
  * Nip Framework
