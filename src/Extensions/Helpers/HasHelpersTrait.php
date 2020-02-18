@@ -2,6 +2,7 @@
 
 namespace Nip\View\Extensions\Helpers;
 
+use Nip\View\Extensions\ExtensionInterface;
 use Nip\View\Helpers\DoctypeHelper;
 
 /**
@@ -33,4 +34,10 @@ trait HasHelpersTrait
     {
         $this->register(new HelpersExtension());
     }
+
+    /**
+     * @param ExtensionInterface $extension
+     * @return mixed
+     */
+    abstract public function register(ExtensionInterface $extension);
 }

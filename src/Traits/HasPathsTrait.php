@@ -2,6 +2,9 @@
 
 namespace Nip\View\Traits;
 
+use Nip\View\ViewFinder\ViewFinder;
+use Nip\View\ViewFinder\ViewFinderInterface;
+
 /**
  * Trait HasPathsTrait
  * @package Nip\View\Traits
@@ -34,13 +37,18 @@ trait HasPathsTrait
         return $this;
     }
 
+    /**
+     * @return ViewFinderInterface|ViewFinder
+     */
+    abstract public function getFinder();
+
     protected function initBasePath()
     {
         $this->setBasePath($this->generateBasePath());
     }
 
     /**
-     * @return string
+     * @return string|boolean
      */
     protected function generateBasePath()
     {

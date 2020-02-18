@@ -9,7 +9,6 @@ use Nip\View\Traits\HasMethodsTrait;
 use Nip\View\Traits\HasPathsTrait;
 use Nip\View\Traits\MethodsOverloadingTrait;
 use Nip\View\ViewFinder\HasViewFinder;
-use Nip\View\ViewInterface;
 
 /**
  * Class View

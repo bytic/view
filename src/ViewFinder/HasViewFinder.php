@@ -87,4 +87,6 @@ trait HasViewFinder
     {
         $this->finder = $finder;
     }
+
+    abstract public function getBasePath();
 }
