@@ -2,7 +2,7 @@
 
 namespace Nip\View;
 
-use Nip\Container\ServiceProvider\AbstractServiceProvider;
+use Nip\Container\ServiceProviders\Providers\AbstractServiceProvider;
 
 /**
  * Class ViewServiceProvider
