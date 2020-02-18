@@ -23,7 +23,7 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "Nip\\View\\Tests\\": "tests/",
+      "Nip\\View\\Tests\\": "tests/src",
       "Nip\\View\\Tests\\Fixtures\\App\\": "tests/fixtures/app"
     }
   },
