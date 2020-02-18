@@ -7,6 +7,7 @@ use Nip\View\Traits\HasDataTrait;
 use Nip\View\Traits\HasExtensionsTrait;
 use Nip\View\Traits\HasMethodsTrait;
 use Nip\View\Traits\HasPathsTrait;
+use Nip\View\Traits\HasRequestTrait;
 use Nip\View\Traits\MethodsOverloadingTrait;
 use Nip\View\ViewFinder\HasViewFinder;
 
@@ -21,6 +22,7 @@ class View implements ViewInterface
     use HasHelpersTrait;
     use HasMethodsTrait;
     use HasPathsTrait;
+    use HasRequestTrait;
     use HasViewFinder;
     use MethodsOverloadingTrait;
 
