@@ -103,6 +103,9 @@
       <path value="$PROJECT_DIR$/vendor/bytic/controllers" />
       <path value="$PROJECT_DIR$/vendor/bytic/google-analytics" />
       <path value="$PROJECT_DIR$/vendor/bytic/dispatcher" />
+      <path value="$PROJECT_DIR$/vendor/symfony/finder" />
+      <path value="$PROJECT_DIR$/vendor/bytic/pipeline" />
+      <path value="$PROJECT_DIR$/vendor/bytic/locale-detector" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="7" />

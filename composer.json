@@ -32,7 +32,7 @@
     "bytic/container": "^0.9",
     "bytic/collections": "^1.0",
     "bytic/helpers": "^0.9",
-    "league/pipeline": "^0.3.0"
+    "bytic/pipeline": "^1.0"
   },
   "require-dev": {
     "squizlabs/php_codesniffer": "^3.3",
