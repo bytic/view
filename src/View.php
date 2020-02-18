@@ -5,35 +5,37 @@ namespace Nip\View;
 use Nip\View\Traits\HasDataTrait;
 use Nip\View\Traits\HasHelpersTrait;
 
+use Nip\View\Extensions\Helpers\HasHelpersTrait;
+use Nip\View\Traits\HasDataTrait;
+use Nip\View\Traits\HasExtensionsTrait;
+use Nip\View\Traits\HasMethodsTrait;
+use Nip\View\Traits\HasPathsTrait;
+use Nip\View\Traits\MethodsOverloadingTrait;
+use Nip\View\ViewFinder\HasViewFinder;
+use Nip\View\ViewInterface;
+
 /**
  * Class View
- *
  *
  */
 class View implements ViewInterface
 {
     use HasDataTrait;
+    use HasExtensionsTrait;
     use HasHelpersTrait;
+    use HasMethodsTrait;
+    use HasPathsTrait;
+    use HasViewFinder;
+    use MethodsOverloadingTrait;
 
-    protected $request = null;
-
+    protected $helpers = [];
     protected $blocks = [];
-    protected $basePath = null;
 
-    /**
-     * @param $name
-     * @param $arguments
-     * @return mixed|null
-     */
-    public function __call($name, $arguments)
+    public function __construct()
     {
-        if ($name === ucfirst($name)) {
-            return $this->getHelper($name);
-        } else {
-            trigger_error("Call to undefined method $name", E_USER_ERROR);
-        }
-
-        return null;
+        $this->addMethodsPipelineStage();
+        $this->addHelpersExtension();
+        $this->initFinder();
     }
 
     /**
@@ -46,96 +48,12 @@ class View implements ViewInterface
     }
 
     /**
-     * @param $view
-     * @return bool
-     */
-    public function existPath($view)
-    {
-        return is_file($this->buildPath($view));
-    }
-
-    /**
-     * Builds path for including
-     * If $view starts with / the path will be relative to the root of the views folder.
-     * Otherwise to caller file location.
-     *
-     * @param string $view
-     * @return string
-     */
-    protected function buildPath($view)
-    {
-        if ($view[0] == '/') {
-            return $this->getBasePath().ltrim($view, "/").'.php';
-        } else {
-            $caller = $this->getLastViewCaller();
-
-            return dirname($caller)."/".$view.".php";
-        }
-    }
-
-    /**
-     * @return string|null
-     */
-    protected function getLastViewCaller()
-    {
-        $backtrace = debug_backtrace();
-        foreach ($backtrace as $call) {
-            if ($call['function'] == 'load') {
-                return $call['file'];
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * @return string
-     */
-    public function getBasePath()
-    {
-        if ($this->basePath === null) {
-            $this->initBasePath();
-        }
-
-        return $this->basePath;
-    }
-
-    /**
-     * @param string $path
-     * @return $this
-     */
-    public function setBasePath($path)
-    {
-        $path = rtrim($path, DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR;
-        $this->basePath = $path;
-
-        return $this;
-    }
-
-    protected function initBasePath()
-    {
-        $this->setBasePath($this->generateBasePath());
-    }
-
-    /**
-     * @return string
-     */
-    protected function generateBasePath()
-    {
-        if (defined('VIEWS_PATH')) {
-            return VIEWS_PATH;
-        }
-
-        return false;
-    }
-
-    /**
      * @param string $block
      */
     public function render($block = 'default')
     {
         if (!empty($this->blocks[$block])) {
-            $this->load("/".$this->blocks[$block]);
+            $this->load("/" . $this->blocks[$block]);
         } else {
             trigger_error("No $block block", E_USER_ERROR);
         }
@@ -183,6 +101,19 @@ class View implements ViewInterface
     }
 
     /**
+     * Builds path for including
+     * If $view starts with / the path will be relative to the root of the views folder.
+     * Otherwise to caller file location.
+     *
+     * @param string $view
+     * @return string
+     */
+    public function buildPath($view)
+    {
+        return $this->getFinder()->find($view);
+    }
+
+    /**
      * @param string $block
      * @return bool
      */
@@ -206,21 +137,5 @@ class View implements ViewInterface
         }
 
         return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getRequest()
-    {
-        return $this->request;
-    }
-
-    /**
-     * @param mixed $request
-     */
-    public function setRequest($request)
-    {
-        $this->request = $request;
     }
 }
