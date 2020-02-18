@@ -2,7 +2,7 @@
 
 namespace Nip\View;
 
-use Nip\Container\ServiceProviders\Providers\AbstractServiceProvider;
+use Nip\Container\ServiceProvider\AbstractServiceProvider;
 
 /**
  * Class ViewServiceProvider
@@ -23,6 +23,7 @@ class ViewServiceProvider extends AbstractServiceProvider
 
     public function registerFactory()
     {
+        $this->getContainer()->singleton('view.factory', ViewFactory::class);
     }
 
 
@@ -31,6 +32,6 @@ class ViewServiceProvider extends AbstractServiceProvider
      */
     public function provides()
     {
-        return ['view','view.finder'];
+        return ['view', 'view.finder', 'view.factory'];
     }
 }
