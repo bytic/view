@@ -33,7 +33,7 @@ trait HasPathsTrait
     {
         $path = rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
         $this->basePath = $path;
-        $this->getFinder()->setPaths($path);
+        $this->getFinder()->prependPath($path);
         return $this;
     }
 
