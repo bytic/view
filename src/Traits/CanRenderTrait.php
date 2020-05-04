@@ -23,6 +23,20 @@ trait CanRenderTrait
         return $this->load($view, $variables, $return);
     }
 
+    /**
+     * @param $view
+     * @param array $variables
+     * @param bool $return
+     * @return bool|string|void|null
+     */
+    public function loadIfExists($view, $variables = [], $return = false)
+    {
+        if ($this->existPath($view)) {
+            return;
+        }
+        return $this->load($view, $variables, $return);
+    }
+
     /** @noinspection PhpInconsistentReturnPointsInspection
      *
      * @param $view
