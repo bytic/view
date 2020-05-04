@@ -3,12 +3,6 @@
 namespace Nip\View;
 
 use Nip\View\Extensions\Helpers\HasHelpersTrait;
-use Nip\View\Traits\HasDataTrait;
-use Nip\View\Traits\HasExtensionsTrait;
-use Nip\View\Traits\HasMethodsTrait;
-use Nip\View\Traits\HasPathsTrait;
-use Nip\View\Traits\HasRequestTrait;
-use Nip\View\Traits\MethodsOverloadingTrait;
 use Nip\View\ViewFinder\HasViewFinder;
 
 /**
@@ -17,14 +11,16 @@ use Nip\View\ViewFinder\HasViewFinder;
  */
 class View implements ViewInterface
 {
-    use HasDataTrait;
-    use HasExtensionsTrait;
+    use Traits\CanRenderTrait;
+    use Traits\HasDataTrait;
+    use Traits\HasExtensionsTrait;
     use HasHelpersTrait;
-    use HasMethodsTrait;
-    use HasPathsTrait;
-    use HasRequestTrait;
+    use Traits\HasMethodsTrait;
+    use Traits\HasPathsTrait;
+    use Traits\HasRequestTrait;
+    use Traits\MethodsOverloadingTrait;
+
     use HasViewFinder;
-    use MethodsOverloadingTrait;
 
     protected $helpers = [];
     protected $blocks = [];
@@ -55,47 +51,6 @@ class View implements ViewInterface
         } else {
             trigger_error("No $block block", E_USER_ERROR);
         }
-    }
-
-    /** @noinspection PhpInconsistentReturnPointsInspection
-     *
-     * @param $view
-     * @param array $variables
-     * @param bool $return
-     * @return string|boolean
-     */
-    public function load($view, $variables = [], $return = false)
-    {
-        $html = $this->getContents($view, $variables);
-
-        if ($return === true) {
-            return $html;
-        }
-
-        echo $html;
-
-        return null;
-    }
-
-    /**
-     * @param $view
-     * @param array $variables
-     * @return string
-     */
-    public function getContents($view, $variables = [])
-    {
-        extract($variables);
-
-        $path = $this->buildPath($view);
-
-        unset($view, $variables);
-        ob_start();
-        /** @noinspection PhpIncludeInspection */
-        include($path);
-        $html = ob_get_contents();
-        ob_end_clean();
-
-        return $html;
     }
 
     /**
