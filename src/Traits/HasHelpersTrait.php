@@ -23,7 +23,6 @@ namespace Nip\View\Traits;
  */
 trait HasHelpersTrait
 {
-
     protected $helpers = [];
 
     /**
