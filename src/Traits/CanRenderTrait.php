@@ -9,7 +9,7 @@ namespace Nip\View\Traits;
 trait CanRenderTrait
 {
     /**
-     * @param bool $condition
+     * @param bool|Callable $condition
      * @param $view
      * @param array $variables
      * @param bool $return
@@ -17,6 +17,7 @@ trait CanRenderTrait
      */
     public function loadIf($condition, $view, $variables = [], $return = false)
     {
+        $condition = is_callable($condition) ? $condition() : $condition;
         if ($condition == false) {
             return;
         }
@@ -31,10 +32,7 @@ trait CanRenderTrait
      */
     public function loadIfExists($view, $variables = [], $return = false)
     {
-        if ($this->existPath($view)) {
-            return;
-        }
-        return $this->load($view, $variables, $return);
+        return $this->loadIf($this->existPath($view), $view, $variables, $return);
     }
 
     /** @noinspection PhpInconsistentReturnPointsInspection
