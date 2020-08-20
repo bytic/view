@@ -21,7 +21,7 @@ class CanRenderTraitTest extends AbstractTest
         $view->shouldReceive('existPath')->with('view_dnx')->andReturn(false);
 
         static::assertSame('html', $view->loadIfExists('view_exist'));
-        static::assertNull( $view->loadIfExists('view_dnx'));
+        static::assertNull($view->loadIfExists('view_dnx'));
     }
 
     public function test_loadIf()
@@ -30,10 +30,14 @@ class CanRenderTraitTest extends AbstractTest
         $view = \Mockery::mock(View::class)->shouldAllowMockingProtectedMethods()->makePartial();
         $view->shouldReceive('load')->andReturn('html');
 
-        static::assertSame('html', $view->loadIf(true,'view_exist'));
-        static::assertNull( $view->loadIf(false, 'view_dnx'));
+        static::assertSame('html', $view->loadIf(true, 'view_exist'));
+        static::assertNull($view->loadIf(false, 'view_dnx'));
 
-        static::assertSame('html', $view->loadIf(function() {return true;},'view_exist'));
-        static::assertNull( $view->loadIf(function() {return false;}, 'view_dnx'));
+        static::assertSame('html', $view->loadIf(function () {
+            return true;
+        }, 'view_exist'));
+        static::assertNull($view->loadIf(function () {
+            return false;
+        }, 'view_dnx'));
     }
 }
