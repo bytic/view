@@ -2,7 +2,7 @@
 
 namespace Nip\View\Tests\Traits;
 
-use Nip\Request;
+use Nip\Http\Request;
 use Nip\View\Tests\AbstractTest;
 use Nip\View\Tests\Fixtures\App\View;
 

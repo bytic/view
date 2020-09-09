@@ -2,6 +2,7 @@
 
 namespace Nip\View;
 
+use ArrayAccess;
 use Nip\View\Extensions\Helpers\HasHelpersTrait;
 use Nip\View\ViewFinder\HasViewFinder;
 
@@ -9,7 +10,7 @@ use Nip\View\ViewFinder\HasViewFinder;
  * Class View
  *
  */
-class View implements ViewInterface
+class View implements ViewInterface, ArrayAccess
 {
     use Traits\CanRenderTrait;
     use Traits\HasDataTrait;
