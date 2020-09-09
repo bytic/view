@@ -10,7 +10,6 @@ use Nip\Container\ServiceProviders\Providers\AbstractServiceProvider;
  */
 class ViewServiceProvider extends AbstractServiceProvider
 {
-
     /**
      * Register the service provider.
      *

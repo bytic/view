@@ -26,7 +26,7 @@ class Email extends View
 
     public function initBasePath()
     {
-        $this->setBasePath(MODULES_PATH.Request::instance()->getModuleName().'/views/');
+        $this->setBasePath(MODULES_PATH . Request::instance()->getModuleName() . '/views/');
     }
 
     /**

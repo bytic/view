@@ -13,14 +13,14 @@ interface ViewFinderInterface
      *
      * @var string
      */
-    const HINT_PATH_DELIMITER = '::';
+    public const HINT_PATH_DELIMITER = '::';
 
     /**
      * Identifier of the main namespace.
      *
      * @var string
      */
-    const MAIN_NAMESPACE = '__main__';
+    public const MAIN_NAMESPACE = '__main__';
 
     /**
      * Get the fully qualified location of the view.

@@ -11,7 +11,6 @@ use Nip\View\Methods\Pipeline\Stages\AbstractStage;
  */
 class HelpersPipelineStage extends AbstractStage
 {
-
     /**
      * @param MethodCall $methodCall
      * @return mixed

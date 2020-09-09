@@ -15,7 +15,6 @@ use Nip\View\ViewInterface;
  */
 class HelpersExtension extends AbstractExtension
 {
-
     /**
      * @param ViewInterface|MethodsOverloadingTrait|HasMethodsTrait|View $view
      * @return void

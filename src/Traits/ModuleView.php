@@ -11,7 +11,6 @@ use ReflectionClass;
  */
 trait ModuleView
 {
-
     /**
      * @return string
      */
@@ -44,7 +43,7 @@ trait ModuleView
         $reflector = new ReflectionClass(get_class($this));
         $dirName = dirname($reflector->getFileName());
 
-        return dirname(dirname($dirName)).DIRECTORY_SEPARATOR."views".DIRECTORY_SEPARATOR;
+        return dirname(dirname($dirName)) . DIRECTORY_SEPARATOR . "views" . DIRECTORY_SEPARATOR;
     }
 
     /**

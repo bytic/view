@@ -10,7 +10,6 @@ use Nip\View\Extensions\Helpers\HelperNotFoundException;
  */
 class HelpersFactory
 {
-
     /**
      * @param $view
      * @param $name
@@ -51,7 +50,7 @@ class HelpersFactory
     public static function getHelperClassVariations($name)
     {
         return [
-            '\Nip\View\Helpers\\'.$name.'Helper',
+            '\Nip\View\Helpers\\' . $name . 'Helper',
         ];
     }
 }
