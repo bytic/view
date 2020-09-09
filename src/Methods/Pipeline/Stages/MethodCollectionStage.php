@@ -11,7 +11,6 @@ use Nip\View\Methods\Pipeline\MethodCall;
  */
 class MethodCollectionStage extends AbstractStage
 {
-
     /**
      * @param MethodCall $methodCall
      * @return mixed

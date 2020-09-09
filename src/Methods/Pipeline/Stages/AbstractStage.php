@@ -10,7 +10,6 @@ use Nip\View\Methods\Pipeline\MethodCall;
  */
 abstract class AbstractStage implements StageInterface
 {
-
     /**
      * @param MethodCall $methodCall
      * @return MethodCall
