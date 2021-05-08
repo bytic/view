@@ -2,6 +2,7 @@
 
 namespace Nip\View\Extensions\Helpers;
 
+use League\Plates\Engine;
 use Nip\View;
 use Nip\View\Extensions\AbstractExtension;
 use Nip\View\Helpers\HelpersCollection;
@@ -16,20 +17,20 @@ use Nip\View\ViewInterface;
 class HelpersExtension extends AbstractExtension
 {
     /**
-     * @param ViewInterface|MethodsOverloadingTrait|HasMethodsTrait|View $view
+     * @param ViewInterface|MethodsOverloadingTrait|HasMethodsTrait|View $engine
      * @return void
      */
-    public function register(ViewInterface $view)
+    public function register(Engine $engine)
     {
-        $view->getCallPipelineBuilder()->add(new HelpersPipelineStage());
-        HelpersCollection::getInstance()->setEngine($view);
+        $helpersCollection = HelpersCollection::getInstance();
+        $helpersCollection->setEngine($engine);
 
-        $view->addMethod('getHelper', function ($name) {
-            return HelpersCollection::getInstance()->getHelper($name);
+        $engine->addMethod('getHelper', function ($name) use ($helpersCollection) {
+            return $helpersCollection->getHelper($name);
         });
 
-        $view->addMethod('hasHelper', function ($name) {
-            return HelpersCollection::getInstance()->hasHelper($name);
+        $engine->addMethod('hasHelper', function ($name) use ($helpersCollection) {
+            return $helpersCollection->hasHelper($name);
         });
     }
 }

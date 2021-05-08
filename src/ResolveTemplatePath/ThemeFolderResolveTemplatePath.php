@@ -1,17 +1,35 @@
 <?php
 declare(strict_types=1);
 
-namespace Nip\View\ViewFinder;
+namespace Nip\View\ResolveTemplatePath;
 
 use InvalidArgumentException;
+use League\Plates\Engine;
+use League\Plates\Exception\TemplateNotFound;
+use League\Plates\Template\Name;
+use League\Plates\Template\ResolveTemplatePath;
 use Nip\View\Utilities\Backtrace;
 
 /**
  * Class ViewFinder
  * @package Nip\View\ViewFinder
  */
-class ViewFinder implements ViewFinderInterface
+class ThemeFolderResolveTemplatePath implements ResolveTemplatePath
 {
+    /**
+     * Hint path delimiter value.
+     *
+     * @var string
+     */
+    public const HINT_PATH_DELIMITER = '::';
+
+    /**
+     * Identifier of the main namespace.
+     *
+     * @var string
+     */
+    public const MAIN_NAMESPACE = '__main__';
+
     /**
      * The array of active view paths.
      *
@@ -24,6 +42,24 @@ class ViewFinder implements ViewFinderInterface
      */
     protected $rootPath;
 
+    /**
+     * @var Engine
+     */
+    protected $engine;
+
+    /**
+     * ThemeFolderResolveTemplatePath constructor.
+     * @param Engine $engine
+     */
+    public function __construct(Engine $engine)
+    {
+        $this->engine = $engine;
+    }
+
+    public function __invoke(Name $name): string
+    {
+        return $this->find($name->getName());
+    }
 
     /**
      * Get the fully qualified location of the view.
@@ -40,6 +76,59 @@ class ViewFinder implements ViewFinderInterface
         }
 
         return $this->findNamespacedView($view, $namespace);
+    }
+
+    /**
+     * Adds a path where templates are stored.
+     *
+     * @param string $path A path where to look for templates
+     * @param string $namespace A path namespace
+     *
+     * @return void
+     */
+    public function addPath($path, $namespace = self::MAIN_NAMESPACE)
+    {
+        $this->paths[$namespace][] = rtrim($path, '/\\');
+        if ($this->engine->getFolders()->exists($namespace)) {
+            $this->engine->getFolders()->get($namespace)->setPath($path);
+            return;
+        }
+        $this->engine->addFolder($namespace, $path);
+    }
+
+    /**
+     * Prepends a path where templates are stored.
+     *
+     * @param string $path A path where to look for templates
+     * @param string $namespace A path namespace
+     * @return void
+     */
+    public function prependPath($path, $namespace = self::MAIN_NAMESPACE)
+    {
+        $path = rtrim($path, '/\\');
+
+        if (!isset($this->paths[$namespace])) {
+            $this->paths[$namespace][] = $path;
+        } else {
+            array_unshift($this->paths[$namespace], $path);
+        }
+    }
+
+    /**
+     * Sets the paths where templates are stored.
+     *
+     * @param string|array $paths A path or an array of paths where to look for templates
+     * @param string $namespace A path namespace
+     */
+    public function setPaths($paths, $namespace = self::MAIN_NAMESPACE)
+    {
+        if (!is_array($paths)) {
+            $paths = [$paths];
+        }
+        $this->paths[$namespace] = [];
+        foreach ($paths as $path) {
+            $this->addPath($path, $namespace);
+        }
     }
 
     /**
@@ -130,7 +219,9 @@ class ViewFinder implements ViewFinderInterface
                 return $viewPath;
             }
         }
-        throw new InvalidArgumentException(
+        throw new TemplateNotFound(
+            $name,
+            $paths,
             'View [' . $name . '] not found in paths [' . implode(', ', $paths) . '].'
         );
     }
@@ -144,54 +235,6 @@ class ViewFinder implements ViewFinderInterface
     protected function getViewFilename($name)
     {
         return $name . '.php';
-    }
-
-    /**
-     * Adds a path where templates are stored.
-     *
-     * @param string $path A path where to look for templates
-     * @param string $namespace A path namespace
-     *
-     * @return void
-     */
-    public function addPath($path, $namespace = self::MAIN_NAMESPACE)
-    {
-        $this->paths[$namespace][] = rtrim($path, '/\\');
-    }
-
-    /**
-     * Prepends a path where templates are stored.
-     *
-     * @param string $path A path where to look for templates
-     * @param string $namespace A path namespace
-     * @return void
-     */
-    public function prependPath($path, $namespace = self::MAIN_NAMESPACE)
-    {
-        $path = rtrim($path, '/\\');
-
-        if (!isset($this->paths[$namespace])) {
-            $this->paths[$namespace][] = $path;
-        } else {
-            array_unshift($this->paths[$namespace], $path);
-        }
-    }
-
-    /**
-     * Sets the paths where templates are stored.
-     *
-     * @param string|array $paths A path or an array of paths where to look for templates
-     * @param string $namespace A path namespace
-     */
-    public function setPaths($paths, $namespace = self::MAIN_NAMESPACE)
-    {
-        if (!is_array($paths)) {
-            $paths = [$paths];
-        }
-        $this->paths[$namespace] = [];
-        foreach ($paths as $path) {
-            $this->addPath($path, $namespace);
-        }
     }
 
     /**

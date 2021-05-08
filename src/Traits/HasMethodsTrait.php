@@ -12,31 +12,15 @@ use Nip\View\Methods\Pipeline\Stages\MethodCollectionStage;
  */
 trait HasMethodsTrait
 {
-    protected $engineMethods = null;
-
-    public function addMethodsPipelineStage()
-    {
-        $this->addCallPipeline(new MethodCollectionStage());
-    }
-
     /**
-     * @return MethodsCollection
+     * Magic method used to call extension functions.
+     * @param  string $name
+     * @param  array  $arguments
+     * @return mixed
      */
-    public function getEngineMethods(): MethodsCollection
+    public function __call($name, $arguments)
     {
-        if ($this->engineMethods === null) {
-            $this->initEngineMethods();
-        }
-
-        return $this->engineMethods;
-    }
-
-    /**
-     * @param MethodsCollection $engineMethods
-     */
-    public function setEngineMethods(MethodsCollection $engineMethods): void
-    {
-        $this->engineMethods = $engineMethods;
+        return $this->getFunction($name)->call(null, $arguments);
     }
 
     /**
@@ -45,7 +29,7 @@ trait HasMethodsTrait
      */
     public function addMethod($name, Closure $callable)
     {
-        $this->getEngineMethods()->set($name, $callable);
+        $this->registerFunction($name, $callable);
     }
 
     /**
@@ -56,19 +40,5 @@ trait HasMethodsTrait
         foreach ($methods as $name => $closure) {
             $this->addMethod($name, $closure);
         }
-    }
-
-    protected function initEngineMethods()
-    {
-        $methods = $this->newEngineMethods();
-        $this->setEngineMethods($methods);
-    }
-
-    /**
-     * @return MethodsCollection
-     */
-    protected function newEngineMethods()
-    {
-        return new MethodsCollection();
     }
 }

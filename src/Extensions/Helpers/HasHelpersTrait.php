@@ -2,7 +2,6 @@
 
 namespace Nip\View\Extensions\Helpers;
 
-use Nip\View\Extensions\ExtensionInterface;
 use Nip\View\Helpers\DoctypeHelper;
 
 /**
@@ -32,12 +31,33 @@ trait HasHelpersTrait
 {
     public function addHelpersExtension()
     {
-        $this->register(new HelpersExtension());
+        $this->loadExtension(new HelpersExtension());
     }
 
     /**
-     * @param ExtensionInterface $extension
+     * @inheritDoc
+     */
+    public function getFunction($name)
+    {
+        $this->initFunctionHelper($name);
+        return parent::getFunction($name);
+    }
+
+
+    /**
+     * @param $name
      * @return mixed
      */
-    abstract public function register(ExtensionInterface $extension);
+    protected function initFunctionHelper($name)
+    {
+        if ($this->doesFunctionExist($name)) {
+            return;
+        }
+        if ($this->hasHelper($name) === false) {
+            return;
+        }
+        $this->registerFunction($name, function () use ($name) {
+            return $this->getHelper($name);
+        });
+    }
 }
