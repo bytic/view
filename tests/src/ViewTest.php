@@ -11,6 +11,22 @@ use Nip\View\View;
  */
 class ViewTest extends AbstractTest
 {
+    public function test_render_with_layout()
+    {
+        $view = new View();
+        $view->setBasePath(TEST_FIXTURE_PATH . '/views');
+        $view->setBlock('content', 'index/index');
+        $view->set('title', 'TITLE');
+
+        $content = $view->load('/layouts/default',[], true);
+
+        self::assertSame(
+            file_get_contents(TEST_FIXTURE_PATH . '/html/complete_output.html'),
+            $content
+        );
+    }
+
+
     public function testHasMethods()
     {
         $view = new View();
@@ -30,8 +46,8 @@ class ViewTest extends AbstractTest
         $helper = $view->Doctype();
 
         self::assertInstanceOf(DoctypeHelper::class, $helper);
-        self::assertSame(
-            '<!DOCTYPE html>',
+        self::assertStringStartsWith(
+            '<!DOCTYPE html',
             $helper->render()
         );
     }
