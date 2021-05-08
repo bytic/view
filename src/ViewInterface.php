@@ -10,8 +10,4 @@ use Nip\View\Methods\Pipeline\MethodsPipelineBuilder as PipelineBuilder;
  */
 interface ViewInterface
 {
-    /**
-     * @return PipelineBuilder
-     */
-    public function getCallPipelineBuilder();
 }

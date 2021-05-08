@@ -1,13 +1,29 @@
 <?php
 
-namespace Nip\View\Traits;
+namespace Nip\View\Template;
+
+use Nip\View\View;
 
 /**
- * Trait HasDataTrait
- * @package Nip\View\Traits
+ * Class Template
+ * @package Nip\View\Template
+ *
+ * @property View $engine
  */
-trait HasDataTrait
+class Template extends \League\Plates\Template\Template
 {
+
+    /**
+     * @inheritDoc
+     */
+    public function render($data = []): ?string
+    {
+        if (is_string($data)) {
+            echo $this->fetch($data);
+            return null ;
+        }
+        return parent::render($data);
+    }
 
     /**
      * Determine if a piece of data is bound.
@@ -81,9 +97,8 @@ trait HasDataTrait
      */
     public function get($name, $default = null)
     {
-        $data = $this->getData();
-        if (isset($data[$name])) {
-            return $data[$name];
+        if (isset($this->data[$name])) {
+            return $this->data[$name];
         } else {
             return $default;
         }
@@ -95,8 +110,7 @@ trait HasDataTrait
      */
     public function has(string $name)
     {
-        $data = $this->getData();
-        return isset($data[$name]);
+        return isset($this->data[$name]);
     }
 
     /**
@@ -107,7 +121,7 @@ trait HasDataTrait
     public function with($key, $value = null)
     {
         $data = (is_array($key)) ? $key : [$key => $value];
-        $this->addData($data);
+        $this->data = array_merge($this->data, $data);
 
         return $this;
     }
@@ -119,7 +133,7 @@ trait HasDataTrait
      */
     public function set($key, $value)
     {
-        $this->data->add([$key => $value]);
+        $this->data[$key] = $value;
 
         return $this;
     }

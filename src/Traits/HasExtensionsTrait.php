@@ -2,7 +2,7 @@
 
 namespace Nip\View\Traits;
 
-use Nip\View\Extensions\ExtensionInterface;
+use League\Plates\Extension\ExtensionInterface;
 
 /**
  * Trait HasExtensionsTrait
@@ -12,9 +12,10 @@ trait HasExtensionsTrait
 {
     /**
      * @param ExtensionInterface $extension
+     * @deprecated use loadExtension($extension)
      */
     public function register(ExtensionInterface $extension)
     {
-        $extension->register($this);
+        $this->loadExtension($extension);
     }
 }

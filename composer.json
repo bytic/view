@@ -29,7 +29,7 @@
   },
   "require": {
     "php": "^7.0|^8.0",
-    "league/plates": "^3.0",
+    "league/plates": "v3.x-dev#0ed15417865a1b51d6e4464f0cbbc986e9840253",
     "bytic/container": "^0.9|^1.0|^2.0",
     "bytic/collections": "^1.0",
     "bytic/helpers": "^0.9|^1.0",

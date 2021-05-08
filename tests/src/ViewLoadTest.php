@@ -3,6 +3,7 @@
 namespace Nip\View\Tests;
 
 use InvalidArgumentException;
+use League\Plates\Exception\TemplateNotFound;
 use Nip\View;
 use Nip\View\Tests\Fixtures\App\View as FixturesView;
 
@@ -48,7 +49,7 @@ class ViewLoadTest extends AbstractTest
         $content = $view->getContents('template::modules/header');
         self::assertEquals('TITLE TEMPLATE', $content);
 
-        self::expectException(InvalidArgumentException::class);
+        self::expectException(TemplateNotFound::class);
         $view->getContents('template::/modules/footer');
     }
 
@@ -68,7 +69,7 @@ class ViewLoadTest extends AbstractTest
     protected function generateView()
     {
         $view = new View();
-        $view->setBasePath(TEST_FIXTURE_PATH . '/views');
+        $view->setBasePath(TEST_FIXTURE_PATH . DIRECTORY_SEPARATOR . 'views');
         return $view;
     }
 }

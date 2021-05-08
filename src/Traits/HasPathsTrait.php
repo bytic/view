@@ -2,8 +2,8 @@
 
 namespace Nip\View\Traits;
 
-use Nip\View\ViewFinder\ViewFinder;
-use Nip\View\ViewFinder\ViewFinderInterface;
+use Nip\View\ResolveTemplatePath\ViewFinder;
+use Nip\View\ResolveTemplatePath\ViewFinderInterface;
 
 /**
  * Trait HasPathsTrait
@@ -11,29 +11,29 @@ use Nip\View\ViewFinder\ViewFinderInterface;
  */
 trait HasPathsTrait
 {
-    protected $basePath = null;
 
     /**
      * @return string
      */
     public function getBasePath()
     {
-        if ($this->basePath === null) {
+        if ($this->getDirectory() === null) {
             $this->initBasePath();
         }
 
-        return $this->basePath;
+        return $this->getDirectory();
     }
 
     /**
      * @param string $path
      * @return $this
+     * @deprecated use Set
      */
     public function setBasePath($path)
     {
         $path = rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
-        $this->basePath = $path;
-        $this->getFinder()->prependPath($path);
+        $this->setDirectory($path);
+        $this->getResolveTemplatePath()->prependPath($path);
         return $this;
     }
 

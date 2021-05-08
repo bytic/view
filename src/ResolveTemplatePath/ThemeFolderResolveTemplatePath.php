@@ -1,16 +1,34 @@
 <?php
 
-namespace Nip\View\ViewFinder;
+namespace Nip\View\ResolveTemplatePath;
 
 use InvalidArgumentException;
+use League\Plates\Engine;
+use League\Plates\Exception\TemplateNotFound;
+use League\Plates\Template\Name;
+use League\Plates\Template\ResolveTemplatePath;
 use Nip\View\Utilities\Backtrace;
 
 /**
  * Class ViewFinder
  * @package Nip\View\ViewFinder
  */
-class ViewFinder implements ViewFinderInterface
+class ThemeFolderResolveTemplatePath implements ResolveTemplatePath
 {
+    /**
+     * Hint path delimiter value.
+     *
+     * @var string
+     */
+    public const HINT_PATH_DELIMITER = '::';
+
+    /**
+     * Identifier of the main namespace.
+     *
+     * @var string
+     */
+    public const MAIN_NAMESPACE = '__main__';
+
     /**
      * The array of active view paths.
      *
@@ -23,11 +41,29 @@ class ViewFinder implements ViewFinderInterface
      */
     protected $rootPath;
 
+    /**
+     * @var Engine
+     */
+    protected $engine;
+
+    /**
+     * ThemeFolderResolveTemplatePath constructor.
+     * @param Engine $engine
+     */
+    public function __construct(Engine $engine)
+    {
+        $this->engine = $engine;
+    }
+
+    public function __invoke(Name $name): string
+    {
+        return $this->find($name->getName());
+    }
 
     /**
      * Get the fully qualified location of the view.
      *
-     * @param  string $name
+     * @param string $name
      * @return string
      */
     public function find($name)
@@ -42,105 +78,6 @@ class ViewFinder implements ViewFinderInterface
     }
 
     /**
-     * Get the path to a template with a relative path.
-     *
-     * @param  string $name
-     * @return string
-     */
-    protected function findRelativePathView($name)
-    {
-        $caller = Backtrace::getViewOrigin();
-        return $this->findInPaths($name, [dirname($caller)]);
-    }
-
-    /**
-     * Get the path to a template with a named path.
-     *
-     * @param  string $name
-     * @param $namespace
-     * @return string
-     */
-    protected function findNamespacedView($name, $namespace)
-    {
-        return $this->findInPaths($name, $this->paths[$namespace]);
-    }
-
-    /**
-     * @param $name
-     * @param string $namespace
-     * @return array
-     */
-    public function parseName($name, $namespace = self::MAIN_NAMESPACE)
-    {
-        if ($this->hasNamespaceInformation($name = trim($name))) {
-            return $this->parseNamespacedName($name);
-        }
-        return [$namespace, $name];
-    }
-
-    /**
-     * Get the segments of a template with a named path.
-     *
-     * @param  string $name
-     * @return array
-     *
-     * @throws \InvalidArgumentException
-     */
-    protected function parseNamespacedName($name)
-    {
-        $segments = explode(static::HINT_PATH_DELIMITER, $name);
-        if (count($segments) != 2) {
-            throw new InvalidArgumentException("View [$name] has an invalid name.");
-        }
-        if (!isset($this->paths[$segments[0]]) || count($this->paths[$segments[0]]) < 1) {
-            throw new InvalidArgumentException("No path defined for namespace [{$segments[0]}].");
-        }
-        return $segments;
-    }
-
-    /**
-     * @param $name
-     * @return bool
-     */
-    public function isRelativeView($name)
-    {
-        return $name[0] !== '/';
-    }
-
-    /**
-     * Find the given view in the list of paths.
-     *
-     * @param  string $name
-     * @param  array $paths
-     * @return string
-     *
-     * @throws \InvalidArgumentException
-     */
-    protected function findInPaths($name, $paths)
-    {
-        foreach ((array)$paths as $path) {
-            $file = $this->getViewFilename($name);
-            if (file_exists($viewPath = $path . '/' . $file)) {
-                return $viewPath;
-            }
-        }
-        throw new InvalidArgumentException(
-            'View [' . $name . '] not found in paths [' . implode(', ', $paths) . '].'
-        );
-    }
-
-    /**
-     * Get an view file name with extension.
-     *
-     * @param  string $name
-     * @return string
-     */
-    protected function getViewFilename($name)
-    {
-        return $name . '.php';
-    }
-
-    /**
      * Adds a path where templates are stored.
      *
      * @param string $path A path where to look for templates
@@ -151,6 +88,11 @@ class ViewFinder implements ViewFinderInterface
     public function addPath($path, $namespace = self::MAIN_NAMESPACE)
     {
         $this->paths[$namespace][] = rtrim($path, '/\\');
+        if ($this->engine->getFolders()->exists($namespace)) {
+            $this->engine->getFolders()->get($namespace)->setPath($path);
+            return;
+        }
+        $this->engine->addFolder($namespace, $path);
     }
 
     /**
@@ -189,9 +131,110 @@ class ViewFinder implements ViewFinderInterface
     }
 
     /**
+     * Get the path to a template with a relative path.
+     *
+     * @param string $name
+     * @return string
+     */
+    protected function findRelativePathView($name)
+    {
+        $caller = Backtrace::getViewOrigin();
+        return $this->findInPaths($name, [dirname($caller)]);
+    }
+
+    /**
+     * Get the path to a template with a named path.
+     *
+     * @param string $name
+     * @param $namespace
+     * @return string
+     */
+    protected function findNamespacedView($name, $namespace)
+    {
+        return $this->findInPaths($name, $this->paths[$namespace]);
+    }
+
+    /**
+     * @param $name
+     * @param string $namespace
+     * @return array
+     */
+    public function parseName($name, $namespace = self::MAIN_NAMESPACE)
+    {
+        if ($this->hasNamespaceInformation($name = trim($name))) {
+            return $this->parseNamespacedName($name);
+        }
+        return [$namespace, $name];
+    }
+
+    /**
+     * Get the segments of a template with a named path.
+     *
+     * @param string $name
+     * @return array
+     *
+     * @throws \InvalidArgumentException
+     */
+    protected function parseNamespacedName($name)
+    {
+        $segments = explode(static::HINT_PATH_DELIMITER, $name);
+        if (count($segments) != 2) {
+            throw new InvalidArgumentException("View [$name] has an invalid name.");
+        }
+        if (!isset($this->paths[$segments[0]]) || count($this->paths[$segments[0]]) < 1) {
+            throw new InvalidArgumentException("No path defined for namespace [{$segments[0]}].");
+        }
+        return $segments;
+    }
+
+    /**
+     * @param $name
+     * @return bool
+     */
+    public function isRelativeView($name)
+    {
+        return $name[0] !== '/';
+    }
+
+    /**
+     * Find the given view in the list of paths.
+     *
+     * @param string $name
+     * @param array $paths
+     * @return string
+     *
+     * @throws \InvalidArgumentException
+     */
+    protected function findInPaths($name, $paths)
+    {
+        foreach ((array)$paths as $path) {
+            $file = $this->getViewFilename($name);
+            if (file_exists($viewPath = $path . '/' . $file)) {
+                return $viewPath;
+            }
+        }
+        throw new TemplateNotFound(
+            $name,
+            $paths,
+            'View [' . $name . '] not found in paths [' . implode(', ', $paths) . '].'
+        );
+    }
+
+    /**
+     * Get an view file name with extension.
+     *
+     * @param string $name
+     * @return string
+     */
+    protected function getViewFilename($name)
+    {
+        return $name . '.php';
+    }
+
+    /**
      * Returns whether or not the view name has any hint information.
      *
-     * @param  string $name
+     * @param string $name
      * @return bool
      */
     public function hasNamespaceInformation($name)

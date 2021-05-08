@@ -2,6 +2,8 @@
 
 namespace Nip\View\Traits;
 
+use League\Plates\Template\Template;
+
 /**
  * Class CanRenderTrait
  * @package Nip\View\Traits
@@ -59,20 +61,68 @@ trait CanRenderTrait
      * @param $view
      * @param array $variables
      * @return string
+     * @deprecated use render($view, $variables)
      */
     public function getContents($view, $variables = [])
     {
-        extract($variables);
+        return $this->render($view, $variables);
+    }
 
-        $path = $this->buildPath($view);
+    /**
+     * @param string $block
+     */
+    public function render($name, array $data = [])
+    {
+        if ($this->isBlock($name)) {
+            $name = "/" . $this->blocks[$name];
+        }
+        return parent::render($name, $data);
+    }
 
-        unset($view, $variables);
-        ob_start();
-        /** @noinspection PhpIncludeInspection */
-        include($path);
-        $html = ob_get_contents();
-        ob_end_clean();
+    /**
+     * Builds path for including
+     * If $view starts with / the path will be relative to the root of the views folder.
+     * Otherwise to caller file location.
+     *
+     * @param string $view
+     * @return string
+     */
+    public function buildPath($view)
+    {
+        return $this->getResolveTemplatePath()->find($view);
+    }
 
-        return $html;
+    public function getBlock($name)
+    {
+        return $this->blocks[$name];
+    }
+
+    /**
+     * @param $name
+     * @param $block
+     */
+    public function setBlock($name, $block)
+    {
+        $this->blocks[$name] = $block;
+    }
+
+    /**
+     * @param string $block
+     * @return bool
+     */
+    public function isBlock($block = 'default')
+    {
+        return empty($this->blocks[$block]) ? false : true;
+    }
+
+
+    /**
+     * Create a new template.
+     * @param string $name
+     * @return Template
+     */
+    public function make($name)
+    {
+        return new \Nip\View\Template\Template($this, $name);
     }
 }

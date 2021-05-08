@@ -4,13 +4,15 @@ namespace Nip\View;
 
 use ArrayAccess;
 use Nip\View\Extensions\Helpers\HasHelpersTrait;
-use Nip\View\ViewFinder\HasViewFinder;
+use Nip\View\Extensions\LegacyLoadExtension;
+use Nip\View\ResolveTemplatePath\HasViewFinder;
+use Nip\View\ResolveTemplatePath\ThemeFolderResolveTemplatePath;
 
 /**
  * Class View
  *
  */
-class View implements ViewInterface, ArrayAccess
+class View extends \League\Plates\Engine implements ViewInterface, ArrayAccess
 {
     use Traits\CanRenderTrait;
     use Traits\HasDataTrait;
@@ -19,77 +21,22 @@ class View implements ViewInterface, ArrayAccess
     use Traits\HasMethodsTrait;
     use Traits\HasPathsTrait;
     use Traits\HasRequestTrait;
-    use Traits\MethodsOverloadingTrait;
 
     use HasViewFinder;
 
     protected $helpers = [];
     protected $blocks = [];
 
-    public function __construct()
+    /**
+     * @inheritDoc
+     */
+    public function __construct($directory = null, $fileExtension = 'php')
     {
-        $this->addMethodsPipelineStage();
+        parent::__construct($directory, $fileExtension);
         $this->addHelpersExtension();
-        $this->initFinder();
+        $this->loadExtension(new LegacyLoadExtension());
+        $this->setResolveTemplatePath(new ThemeFolderResolveTemplatePath($this));
+//        $this->initFinder();
     }
 
-    /**
-     * @param $name
-     * @param $block
-     */
-    public function setBlock($name, $block)
-    {
-        $this->blocks[$name] = $block;
-    }
-
-    /**
-     * @param string $block
-     */
-    public function render($block = 'default')
-    {
-        if (!empty($this->blocks[$block])) {
-            $this->load("/" . $this->blocks[$block]);
-        } else {
-            trigger_error("No $block block", E_USER_ERROR);
-        }
-    }
-
-    /**
-     * Builds path for including
-     * If $view starts with / the path will be relative to the root of the views folder.
-     * Otherwise to caller file location.
-     *
-     * @param string $view
-     * @return string
-     */
-    public function buildPath($view)
-    {
-        return $this->getFinder()->find($view);
-    }
-
-    /**
-     * @param string $block
-     * @return bool
-     */
-    public function isBlock($block = 'default')
-    {
-        return empty($this->blocks[$block]) ? false : true;
-    }
-
-    /**
-     * Assigns variables in bulk in the current scope
-     *
-     * @param array $array
-     * @return $this
-     */
-    public function assign($array = [])
-    {
-        foreach ($array as $key => $value) {
-            if (is_string($key)) {
-                $this->set($key, $value);
-            }
-        }
-
-        return $this;
-    }
 }
