@@ -2,9 +2,6 @@
 
 namespace Nip\View\Traits;
 
-use Nip\View\ResolveTemplatePath\ViewFinder;
-use Nip\View\ResolveTemplatePath\ViewFinderInterface;
-
 /**
  * Trait HasPathsTrait
  * @package Nip\View\Traits
@@ -37,9 +34,6 @@ trait HasPathsTrait
         return $this;
     }
 
-    /**
-     * @return ViewFinderInterface|ViewFinder
-     */
     abstract public function getFinder();
 
     protected function initBasePath()

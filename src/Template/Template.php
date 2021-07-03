@@ -18,11 +18,14 @@ class Template extends \League\Plates\Template\Template
      */
     public function render($data = []): ?string
     {
-        if (is_string($data)) {
-            echo $this->fetch($data);
-            return null ;
+        if (!is_string($data)) {
+            return parent::render($data);
         }
-        return parent::render($data);
+
+        if (isset($this->sections[$data])) {
+            return $this->section($data);
+        }
+        return $this->fetch($data);
     }
 
     /**
