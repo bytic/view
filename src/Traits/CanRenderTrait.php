@@ -35,6 +35,18 @@ trait CanRenderTrait
         return $this->loadIf($this->existPath($view), $view, $variables, $return);
     }
 
+    /**
+     * @param $view
+     * @param array $variables
+     * @param bool $return
+     * @return bool|string|void|null
+     */
+    public function loadWithFallback($view, $fallback, $variables = [], $return = false)
+    {
+        $view = $this->existPath($view) ? $view : $fallback;
+        return $this->load( $view, $variables, $return);
+    }
+
     /** @noinspection PhpInconsistentReturnPointsInspection
      *
      * @param $view
