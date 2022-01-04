@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Nip\View;
 
@@ -40,6 +41,16 @@ class View implements ViewInterface, ArrayAccess
     public function setBlock($name, $block)
     {
         $this->blocks[$name] = $block;
+    }
+
+    /**
+     * @param $name
+     * @param $default
+     * @return string|null
+     */
+    public function getBlock($name, $default = null)
+    {
+        return $this->blocks[$name] ?? $default;
     }
 
     /**

@@ -1,7 +1,11 @@
 <?php
+declare(strict_types=1);
 
 namespace Nip\View\Tests;
 
+use Nip\Helpers\View\Messages;
+use Nip\Helpers\View\Paginator;
+use Nip\Helpers\View\Scripts;
 use Nip\View\Helpers\DoctypeHelper;
 use Nip\View\View;
 
@@ -40,10 +44,9 @@ class ViewTest extends AbstractTest
     {
         $view = new View();
 
-        static::assertInstanceOf(\Nip\Helpers\View\Messages::class, $view->Messages());
-        static::assertInstanceOf(\Nip\Helpers\View\Paginator::class, $view->Paginator());
-        static::assertInstanceOf(\Nip\Helpers\View\Scripts::class, $view->Scripts());
-        static::assertInstanceOf(\Nip\Helpers\View\TinyMCE::class, $view->TinyMCE());
+        static::assertInstanceOf(Messages::class, $view->Messages());
+        static::assertInstanceOf(Paginator::class, $view->Paginator());
+        static::assertInstanceOf(Scripts::class, $view->Scripts());
     }
 
 //
