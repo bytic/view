@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Nip\View\ViewFinder;
 
@@ -27,7 +28,7 @@ class ViewFinder implements ViewFinderInterface
     /**
      * Get the fully qualified location of the view.
      *
-     * @param  string $name
+     * @param string $name
      * @return string
      */
     public function find($name)
@@ -44,7 +45,7 @@ class ViewFinder implements ViewFinderInterface
     /**
      * Get the path to a template with a relative path.
      *
-     * @param  string $name
+     * @param string $name
      * @return string
      */
     protected function findRelativePathView($name)
@@ -56,7 +57,7 @@ class ViewFinder implements ViewFinderInterface
     /**
      * Get the path to a template with a named path.
      *
-     * @param  string $name
+     * @param string $name
      * @param $namespace
      * @return string
      */
@@ -72,7 +73,8 @@ class ViewFinder implements ViewFinderInterface
      */
     public function parseName($name, $namespace = self::MAIN_NAMESPACE)
     {
-        if ($this->hasNamespaceInformation($name = trim($name))) {
+        $name = trim($name);
+        if ($this->hasNamespaceInformation($name)) {
             return $this->parseNamespacedName($name);
         }
         return [$namespace, $name];
@@ -81,10 +83,10 @@ class ViewFinder implements ViewFinderInterface
     /**
      * Get the segments of a template with a named path.
      *
-     * @param  string $name
+     * @param string $name
      * @return array
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     protected function parseNamespacedName($name)
     {
@@ -102,25 +104,29 @@ class ViewFinder implements ViewFinderInterface
      * @param $name
      * @return bool
      */
-    public function isRelativeView($name)
+    public function isRelativeView($name): bool
     {
-        return $name[0] !== '/';
+        if (!is_string($name)) {
+            return false;
+        }
+        return substr($name, 0, 1) !== '/';
     }
 
     /**
      * Find the given view in the list of paths.
      *
-     * @param  string $name
-     * @param  array $paths
+     * @param string $name
+     * @param array $paths
      * @return string
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     protected function findInPaths($name, $paths)
     {
         foreach ((array)$paths as $path) {
             $file = $this->getViewFilename($name);
-            if (file_exists($viewPath = $path . '/' . $file)) {
+            $viewPath = $path . '/' . $file;
+            if (file_exists($viewPath)) {
                 return $viewPath;
             }
         }
@@ -132,7 +138,7 @@ class ViewFinder implements ViewFinderInterface
     /**
      * Get an view file name with extension.
      *
-     * @param  string $name
+     * @param string $name
      * @return string
      */
     protected function getViewFilename($name)
@@ -191,7 +197,7 @@ class ViewFinder implements ViewFinderInterface
     /**
      * Returns whether or not the view name has any hint information.
      *
-     * @param  string $name
+     * @param string $name
      * @return bool
      */
     public function hasNamespaceInformation($name)
