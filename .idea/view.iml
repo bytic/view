@@ -7,6 +7,7 @@
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" packagePrefix="Nip\View\" />
       <sourceFolder url="file://$MODULE_DIR$/tests" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/tests/fixtures/app" isTestSource="true" packagePrefix="Nip\View\Tests\Fixtures\App\" />
+      <sourceFolder url="file://$MODULE_DIR$/legacy" isTestSource="false" packagePrefix="Nip\View\Legacy\" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/brick/math" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/bytic/assets" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/bytic/collections" />

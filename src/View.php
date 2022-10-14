@@ -4,8 +4,10 @@ declare(strict_types=1);
 namespace Nip\View;
 
 use ArrayAccess;
+use League\Plates\Engine;
 use Nip\View\Extensions\Helpers\HasHelpersTrait;
 use Nip\View\Extensions\LegacyLoadExtension;
+use Nip\View\Legacy\Traits\ViewLegacyTrait;
 use Nip\View\ResolveTemplatePath\HasViewFinder;
 use Nip\View\ResolveTemplatePath\ThemeFolderResolveTemplatePath;
 
@@ -13,7 +15,7 @@ use Nip\View\ResolveTemplatePath\ThemeFolderResolveTemplatePath;
  * Class View
  *
  */
-class View extends \League\Plates\Engine implements ViewInterface, ArrayAccess
+class View extends Engine implements ViewInterface, ArrayAccess
 {
     use Traits\CanRenderTrait;
     use Traits\HasDataTrait;
@@ -24,6 +26,7 @@ class View extends \League\Plates\Engine implements ViewInterface, ArrayAccess
     use Traits\HasRequestTrait;
 
     use HasViewFinder;
+    use ViewLegacyTrait;
 
     protected $helpers = [];
     protected $blocks = [];
@@ -37,7 +40,7 @@ class View extends \League\Plates\Engine implements ViewInterface, ArrayAccess
         $this->addHelpersExtension();
         $this->loadExtension(new LegacyLoadExtension());
         $this->setResolveTemplatePath(new ThemeFolderResolveTemplatePath($this));
-//        $this->initFinder();
+        $this->initFinder();
     }
 
 }
