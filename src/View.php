@@ -29,7 +29,6 @@ class View extends Engine implements ViewInterface, ArrayAccess
     use ViewLegacyTrait;
 
     protected $helpers = [];
-    protected $blocks = [];
 
     /**
      * @inheritDoc

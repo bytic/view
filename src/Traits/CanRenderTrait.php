@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Nip\View\Traits;
 
@@ -10,6 +11,8 @@ use League\Plates\Template\Template;
  */
 trait CanRenderTrait
 {
+    protected $blocks = [];
+
     /**
      * @param bool|Callable $condition
      * @param $view
@@ -46,7 +49,7 @@ trait CanRenderTrait
     public function loadWithFallback($view, $fallback, $variables = [], $return = false)
     {
         $view = $this->existPath($view) ? $view : $fallback;
-        return $this->load( $view, $variables, $return);
+        return $this->load($view, $variables, $return);
     }
 
     /** @noinspection PhpInconsistentReturnPointsInspection
@@ -75,7 +78,7 @@ trait CanRenderTrait
      * @return string
      * @deprecated use render($view, $variables)
      */
-    public function getContents($view, $variables = [])
+    public function getContents($view, array $variables = [])
     {
         return $this->render($view, $variables);
     }
@@ -104,6 +107,10 @@ trait CanRenderTrait
         return $this->getResolveTemplatePath()->find($view);
     }
 
+    /**
+     * @param $name
+     * @return mixed
+     */
     public function getBlock($name)
     {
         return $this->blocks[$name];
@@ -122,9 +129,12 @@ trait CanRenderTrait
      * @param string $block
      * @return bool
      */
-    public function isBlock($block = 'default')
+    public function isBlock($block = 'default'): bool
     {
-        return empty($this->blocks[$block]) ? false : true;
+        if (!is_string($block)) {
+            return false;
+        }
+        return isset($this->blocks[$block]) && !empty($this->blocks[$block]);
     }
 
 

@@ -69,6 +69,9 @@ class ThemeFolderResolveTemplatePath implements ResolveTemplatePath
      */
     public function find($name)
     {
+        if (is_file($name)) {
+            return $name;
+        }
         list($namespace, $view) = $this->parseName($name);
 
         if ($namespace == self::MAIN_NAMESPACE && $this->isRelativeView($view)) {

@@ -1,13 +1,11 @@
 <?php
+declare(strict_types=1);
 
 namespace Nip\View\Extensions;
 
 use League\Plates\Engine;
 use Nip\View;
-use Nip\View\Extensions\AbstractExtension;
-use Nip\View\Helpers\HelpersCollection;
 use Nip\View\Traits\HasMethodsTrait;
-use Nip\View\Traits\MethodsOverloadingTrait;
 use Nip\View\ViewInterface;
 
 /**
@@ -17,14 +15,22 @@ use Nip\View\ViewInterface;
 class LegacyLoadExtension extends AbstractExtension
 {
     /**
-     * @param ViewInterface|MethodsOverloadingTrait|HasMethodsTrait|View $engine
+     * @param ViewInterface|HasMethodsTrait|View $engine
      * @return void
      */
     public function register(Engine $engine)
     {
         $engine->registerFunction('load', function (...$arguments) use ($engine) {
-            $content = $engine->getContents(...$arguments);
-            if (isset($arguments[3]) && $arguments[3] === true) {
+            $view = array_shift($arguments);
+            $variables = array_shift($arguments);
+            $return = array_shift($arguments);
+            if (is_array($view)) {
+                $view = $engine->buildPath($view);
+            }
+            $variables = is_array($variables) ? $variables : [];
+
+            $content = $engine->getContents($view, $variables);
+            if ($return === true) {
                 return $content;
             }
             echo $content;
