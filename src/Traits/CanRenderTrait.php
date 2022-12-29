@@ -1,13 +1,14 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Nip\View\Traits;
 
 use League\Plates\Template\Template;
+use function is_string;
 
 /**
- * Class CanRenderTrait
- * @package Nip\View\Traits
+ * Class CanRenderTrait.
  */
 trait CanRenderTrait
 {
@@ -15,16 +16,16 @@ trait CanRenderTrait
 
     /** @noinspection PhpInconsistentReturnPointsInspection
      *
-     * @param $view
      * @param array $variables
      * @param bool $return
-     * @return string|boolean
+     *
+     * @return string|bool
      */
     public function load($view, $variables = [], $return = false)
     {
         $html = $this->getContents($view, $variables);
 
-        if ($return === true) {
+        if (true === $return) {
             return $html;
         }
 
@@ -34,9 +35,8 @@ trait CanRenderTrait
     }
 
     /**
-     * @param $view
-     * @param array $variables
      * @return string
+     *
      * @deprecated use render($view, $variables)
      */
     public function getContents($view, array $variables = [])
@@ -50,8 +50,9 @@ trait CanRenderTrait
     public function render($name, array $data = [])
     {
         if ($this->isBlock($name)) {
-            $name = "/" . $this->blocks[$name];
+            $name = '/' . $this->blocks[$name];
         }
+
         return parent::render($name, $data);
     }
 
@@ -61,6 +62,7 @@ trait CanRenderTrait
      * Otherwise to caller file location.
      *
      * @param string $view
+     *
      * @return string
      */
     public function buildPath($view)
@@ -69,7 +71,6 @@ trait CanRenderTrait
     }
 
     /**
-     * @param $name
      * @return mixed
      */
     public function getBlock($name)
@@ -77,10 +78,6 @@ trait CanRenderTrait
         return $this->blocks[$name];
     }
 
-    /**
-     * @param $name
-     * @param $block
-     */
     public function setBlock($name, $block)
     {
         $this->blocks[$name] = $block;
@@ -88,20 +85,21 @@ trait CanRenderTrait
 
     /**
      * @param string $block
-     * @return bool
      */
     public function isBlock($block = 'default'): bool
     {
         if (!is_string($block)) {
             return false;
         }
+
         return isset($this->blocks[$block]) && !empty($this->blocks[$block]);
     }
 
-
     /**
      * Create a new template.
+     *
      * @param string $name
+     *
      * @return Template
      */
     public function make($name)

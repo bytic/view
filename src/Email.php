@@ -1,16 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Nip\View;
 
 use Nip\Request;
 use Nip\View;
+use Nip_Mailer;
 
 class Email extends View
 {
     protected $_layout = '/layouts/email';
 
     /**
-     * @var \Nip_Mailer|null
+     * @var Nip_Mailer|null
      */
     protected $_mail = null;
 
@@ -21,7 +24,7 @@ class Email extends View
 
     public function initMailer()
     {
-        $this->_mail = new \Nip_Mailer();
+        $this->_mail = new Nip_Mailer();
     }
 
     public function initBasePath()

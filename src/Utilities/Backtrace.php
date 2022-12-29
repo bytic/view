@@ -1,10 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Nip\View\Utilities;
 
 /**
- * Class Backtrace
- * @package Nip\View\Utilities
+ * Class Backtrace.
  */
 class Backtrace
 {
@@ -15,14 +16,15 @@ class Backtrace
     {
         $backtrace = debug_backtrace();
         foreach ($backtrace as $trace) {
-            if ($trace['function'] == 'load') {
+            if ('load' == $trace['function']) {
                 return $trace['file'];
             }
 
-            if ($trace['function'] == '__call' && $trace['args'][0] == 'load') {
+            if ('__call' == $trace['function'] && 'load' == $trace['args'][0]) {
                 return $trace['file'];
             }
         }
+
         return null;
     }
 }

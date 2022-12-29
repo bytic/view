@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Nip\View\Tests;
 
 use Nip\Container\Container;
@@ -7,12 +9,11 @@ use Nip\View\ViewFactory;
 use Nip\View\ViewServiceProvider;
 
 /**
- * Class ViewServiceProviderTest
- * @package Nip\View\Tests
+ * Class ViewServiceProviderTest.
  */
 class ViewServiceProviderTest extends AbstractTest
 {
-    public function test_registerFactory()
+    public function testRegisterFactory()
     {
         $container = new Container();
 

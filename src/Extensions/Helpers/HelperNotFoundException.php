@@ -1,11 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Nip\View\Extensions\Helpers;
 
+use BadMethodCallException;
+
 /**
- * Class HelperNotFoundException
- * @package Nip\View\Extensions\Helpers
+ * Class HelperNotFoundException.
  */
-class HelperNotFoundException extends \BadMethodCallException
+class HelperNotFoundException extends BadMethodCallException
 {
 }

@@ -1,3 +1,3 @@
 <aside>
-    <?php echo $item; ?>
+    <?= $item; ?>
 </aside>

@@ -1,10 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Nip\View\Traits;
 
 /**
- * Trait HasRequestTrait
- * @package Nip\View\Traits
+ * Trait HasRequestTrait.
  */
 trait HasRequestTrait
 {

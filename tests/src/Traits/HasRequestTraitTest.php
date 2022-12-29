@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Nip\View\Tests\Traits;
 
 use Nip\Http\Request;
@@ -7,18 +9,17 @@ use Nip\View\Tests\AbstractTest;
 use Nip\View\Tests\Fixtures\App\View;
 
 /**
- * Class HasRequestTraitTest
- * @package Nip\View\Tests\Traits
+ * Class HasRequestTraitTest.
  */
 class HasRequestTraitTest extends AbstractTest
 {
-    public function test_getRequest_is_null()
+    public function testGetRequestIsNull()
     {
         $view = new View();
         self::assertNull($view->getRequest());
     }
 
-    public function test_setRequest()
+    public function testSetRequest()
     {
         $view = new View();
         $request = new Request();

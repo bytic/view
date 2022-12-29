@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Nip\View\Tests;
@@ -10,26 +11,24 @@ use Nip\View\Helpers\DoctypeHelper;
 use Nip\View\View;
 
 /**
- * Class ViewTest
- * @package Nip\View\Tests
+ * Class ViewTest.
  */
 class ViewTest extends AbstractTest
 {
-    public function test_render_with_layout()
+    public function testRenderWithLayout()
     {
         $view = new View();
         $view->setBasePath(TEST_FIXTURE_PATH . '/views');
         $view->setBlock('content', 'index/index');
         $view->set('title', 'TITLE');
 
-        $content = $view->load('/layouts/default',[], true);
+        $content = $view->load('/layouts/default', [], true);
 
         self::assertSame(
             file_get_contents(TEST_FIXTURE_PATH . '/html/complete_output.html'),
             $content
         );
     }
-
 
     public function testHasMethods()
     {

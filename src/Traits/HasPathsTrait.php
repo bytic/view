@@ -1,20 +1,23 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Nip\View\Traits;
 
+use function defined;
+use const DIRECTORY_SEPARATOR;
+
 /**
- * Trait HasPathsTrait
- * @package Nip\View\Traits
+ * Trait HasPathsTrait.
  */
 trait HasPathsTrait
 {
-
     /**
      * @return string
      */
     public function getBasePath()
     {
-        if ($this->getDirectory() === null) {
+        if (null === $this->getDirectory()) {
             $this->initBasePath();
         }
 
@@ -23,7 +26,9 @@ trait HasPathsTrait
 
     /**
      * @param string $path
+     *
      * @return $this
+     *
      * @deprecated use Set
      */
     public function setBasePath($path)
@@ -31,6 +36,7 @@ trait HasPathsTrait
         $path = rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
         $this->setDirectory($path);
         $this->getResolveTemplatePath()->prependPath($path);
+
         return $this;
     }
 
@@ -42,7 +48,7 @@ trait HasPathsTrait
     }
 
     /**
-     * @return string|boolean
+     * @return string|bool
      */
     protected function generateBasePath()
     {

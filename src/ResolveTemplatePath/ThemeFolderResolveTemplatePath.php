@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Nip\View\ResolveTemplatePath;
@@ -9,10 +10,13 @@ use League\Plates\Exception\TemplateNotFound;
 use League\Plates\Template\Name;
 use League\Plates\Template\ResolveTemplatePath;
 use Nip\View\Utilities\Backtrace;
+use function count;
+use function dirname;
+use function is_array;
+use function is_string;
 
 /**
- * Class ViewFinder
- * @package Nip\View\ViewFinder
+ * Class ViewFinder.
  */
 class ThemeFolderResolveTemplatePath implements ResolveTemplatePath
 {
@@ -49,7 +53,6 @@ class ThemeFolderResolveTemplatePath implements ResolveTemplatePath
 
     /**
      * ThemeFolderResolveTemplatePath constructor.
-     * @param Engine $engine
      */
     public function __construct(Engine $engine)
     {
@@ -65,6 +68,7 @@ class ThemeFolderResolveTemplatePath implements ResolveTemplatePath
      * Get the fully qualified location of the view.
      *
      * @param string $name
+     *
      * @return string
      */
     public function find($name)
@@ -72,9 +76,9 @@ class ThemeFolderResolveTemplatePath implements ResolveTemplatePath
         if (is_file($name)) {
             return $name;
         }
-        list($namespace, $view) = $this->parseName($name);
+        [$namespace, $view] = $this->parseName($name);
 
-        if ($namespace == self::MAIN_NAMESPACE && $this->isRelativeView($view)) {
+        if (self::MAIN_NAMESPACE == $namespace && $this->isRelativeView($view)) {
             return $this->findRelativePathView($view);
         }
 
@@ -94,6 +98,7 @@ class ThemeFolderResolveTemplatePath implements ResolveTemplatePath
         $this->paths[$namespace][] = rtrim($path, '/\\');
         if ($this->engine->getFolders()->exists($namespace)) {
             $this->engine->getFolders()->get($namespace)->setPath($path);
+
             return;
         }
         $this->engine->addFolder($namespace, $path);
@@ -104,6 +109,7 @@ class ThemeFolderResolveTemplatePath implements ResolveTemplatePath
      *
      * @param string $path A path where to look for templates
      * @param string $namespace A path namespace
+     *
      * @return void
      */
     public function prependPath($path, $namespace = self::MAIN_NAMESPACE)
@@ -138,11 +144,13 @@ class ThemeFolderResolveTemplatePath implements ResolveTemplatePath
      * Get the path to a template with a relative path.
      *
      * @param string $name
+     *
      * @return string
      */
     protected function findRelativePathView($name)
     {
         $caller = Backtrace::getViewOrigin();
+
         return $this->findInPaths($name, [dirname($caller)]);
     }
 
@@ -150,7 +158,7 @@ class ThemeFolderResolveTemplatePath implements ResolveTemplatePath
      * Get the path to a template with a named path.
      *
      * @param string $name
-     * @param $namespace
+     *
      * @return string
      */
     protected function findNamespacedView($name, $namespace)
@@ -159,8 +167,8 @@ class ThemeFolderResolveTemplatePath implements ResolveTemplatePath
     }
 
     /**
-     * @param $name
      * @param string $namespace
+     *
      * @return array
      */
     public function parseName($name, $namespace = self::MAIN_NAMESPACE)
@@ -169,6 +177,7 @@ class ThemeFolderResolveTemplatePath implements ResolveTemplatePath
         if ($this->hasNamespaceInformation($name)) {
             return $this->parseNamespacedName($name);
         }
+
         return [$namespace, $name];
     }
 
@@ -176,6 +185,7 @@ class ThemeFolderResolveTemplatePath implements ResolveTemplatePath
      * Get the segments of a template with a named path.
      *
      * @param string $name
+     *
      * @return array
      *
      * @throws InvalidArgumentException
@@ -183,25 +193,23 @@ class ThemeFolderResolveTemplatePath implements ResolveTemplatePath
     protected function parseNamespacedName($name)
     {
         $segments = explode(static::HINT_PATH_DELIMITER, $name);
-        if (count($segments) != 2) {
+        if (2 != count($segments)) {
             throw new InvalidArgumentException("View [$name] has an invalid name.");
         }
         if (!isset($this->paths[$segments[0]]) || count($this->paths[$segments[0]]) < 1) {
             throw new InvalidArgumentException("No path defined for namespace [{$segments[0]}].");
         }
+
         return $segments;
     }
 
-    /**
-     * @param $name
-     * @return bool
-     */
     public function isRelativeView($name): bool
     {
         if (!is_string($name)) {
             return false;
         }
-        return substr($name, 0, 1) !== '/';
+
+        return '/' !== substr($name, 0, 1);
     }
 
     /**
@@ -209,6 +217,7 @@ class ThemeFolderResolveTemplatePath implements ResolveTemplatePath
      *
      * @param string $name
      * @param array $paths
+     *
      * @return string
      *
      * @throws InvalidArgumentException
@@ -222,17 +231,15 @@ class ThemeFolderResolveTemplatePath implements ResolveTemplatePath
                 return $viewPath;
             }
         }
-        throw new TemplateNotFound(
-            $name,
-            $paths,
-            'View [' . $name . '] not found in paths [' . implode(', ', $paths) . '].'
-        );
+        throw new TemplateNotFound($name, $paths,
+            'View [' . $name . '] not found in paths [' . implode(', ', $paths) . '].');
     }
 
     /**
      * Get an view file name with extension.
      *
      * @param string $name
+     *
      * @return string
      */
     protected function getViewFilename($name)
@@ -244,6 +251,7 @@ class ThemeFolderResolveTemplatePath implements ResolveTemplatePath
      * Returns whether or not the view name has any hint information.
      *
      * @param string $name
+     *
      * @return bool
      */
     public function hasNamespaceInformation($name)

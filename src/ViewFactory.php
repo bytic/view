@@ -1,10 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Nip\View;
 
 /**
- * Class ViewFactory
- * @package Nip\View
+ * Class ViewFactory.
  */
 class ViewFactory
 {

@@ -1,14 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Nip\View\Helpers;
 
 use Nip\Collections\AbstractCollection;
-use Nip\View\View;
 use Nip\View\Extensions\Helpers\HelperNotFoundException;
+use Nip\View\View;
+use function is_object;
 
 /**
- * Class MethodsCollection
- * @package Nip\View\Methods
+ * Class MethodsCollection.
  */
 class HelpersCollection extends AbstractCollection
 {
@@ -19,9 +21,7 @@ class HelpersCollection extends AbstractCollection
      */
     protected $engine = null;
 
-
     /**
-     * @param $name
      * @return mixed
      */
     public function getHelper($name)
@@ -34,7 +34,6 @@ class HelpersCollection extends AbstractCollection
     }
 
     /**
-     * @param $name
      * @return bool
      */
     public function hasHelper($name)
@@ -46,9 +45,6 @@ class HelpersCollection extends AbstractCollection
         return is_object($this->get($name, null));
     }
 
-    /**
-     * @param $name
-     */
     public function initHelper($name)
     {
         try {
@@ -59,17 +55,11 @@ class HelpersCollection extends AbstractCollection
         $this->set($name, $helper);
     }
 
-    /**
-     * @return View
-     */
     public function getEngine(): View
     {
         return $this->engine;
     }
 
-    /**
-     * @param View $engine
-     */
     public function setEngine(View $engine): void
     {
         $this->engine = $engine;
@@ -83,6 +73,7 @@ class HelpersCollection extends AbstractCollection
         if (!isset(static::$instance)) {
             static::$instance = new static();
         }
+
         return static::$instance;
     }
 }

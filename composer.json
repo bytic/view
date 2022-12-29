@@ -1,15 +1,30 @@
 {
   "name": "bytic/view",
-  "type": "library",
   "description": "Php Framework",
-  "homepage": "https://github.com/ByTIC/view",
   "license": "MIT",
+  "type": "library",
   "authors": [
     {
       "name": "Gabriel Solomon",
       "email": "hello@gabrielsolomon.ro"
     }
   ],
+  "homepage": "https://github.com/ByTIC/view",
+  "require": {
+    "php": "^7.0 || ^8.0",
+    "bytic/collections": "^1.0 || ^2.0",
+    "bytic/container": "^0.9 || ^1.0 || ^2.0",
+    "bytic/helpers": "^0.9 || ^1.0 || ^2.0",
+    "bytic/package-base": "^1.0",
+    "bytic/pipeline": "^1.0",
+    "league/plates": "v3.x-dev#0ed15417865a1b51d6e4464f0cbbc986e9840253"
+  },
+  "require-dev": {
+    "bytic/http": "^0.9 || ^1.0",
+    "bytic/phpqatools": "^1.0"
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
   "autoload": {
     "psr-4": {
       "Nip\\View\\": "src",
@@ -19,8 +34,7 @@
       "legacy",
       "src"
     ],
-    "files": [
-    ]
+    "files": []
   },
   "autoload-dev": {
     "psr-4": {
@@ -28,21 +42,6 @@
       "Nip\\View\\Tests\\Fixtures\\App\\": "tests/fixtures/app"
     }
   },
-  "require": {
-    "php": "^7.0|^8.0",
-    "bytic/package-base": "^1.0",
-    "league/plates": "v3.x-dev#0ed15417865a1b51d6e4464f0cbbc986e9840253",
-    "bytic/container": "^0.9|^1.0|^2.0",
-    "bytic/collections": "^1.0|^2.0",
-    "bytic/helpers": "^0.9|^1.0|^2.0",
-    "bytic/pipeline": "^1.0"
-  },
-  "require-dev": {
-    "bytic/http": "^0.9|^1.0",
-    "bytic/phpqatools": "^1.0"
-  },
-  "prefer-stable": true,
-  "minimum-stability": "dev",
   "config": {
     "allow-plugins": {
       "dealerdirect/phpcodesniffer-composer-installer": true,

@@ -1,19 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Nip\View\Helpers;
 
 use Nip\View\Extensions\Helpers\HelperNotFoundException;
 
 /**
- * Class HelpersFactory
- * @package Nip\View\Extensions\Helpers
+ * Class HelpersFactory.
  */
 class HelpersFactory
 {
     /**
-     * @param $view
-     * @param $name
      * @return mixed
+     *
      * @throws HelperNotFoundException
      */
     public static function create($view, $name)
@@ -29,7 +29,6 @@ class HelpersFactory
     }
 
     /**
-     * @param $name
      * @return string
      */
     public static function getHelperClass($name)
@@ -40,11 +39,13 @@ class HelpersFactory
                 return $nameVariation;
             }
         }
+
         return '\Nip\Helpers\View\\' . $name;
     }
 
     /**
      * @param string $name
+     *
      * @return string[]
      */
     public static function getHelperClassVariations($name)

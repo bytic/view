@@ -1,12 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Nip\View;
 
 use Nip\Container\ServiceProviders\Providers\AbstractServiceProvider;
 
 /**
- * Class ViewServiceProvider
- * @package Nip\View
+ * Class ViewServiceProvider.
  */
 class ViewServiceProvider extends AbstractServiceProvider
 {
@@ -25,9 +26,8 @@ class ViewServiceProvider extends AbstractServiceProvider
         $this->getContainer()->singleton('view.factory', ViewFactory::class);
     }
 
-
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function provides()
     {

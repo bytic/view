@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Nip\View\Extensions;
@@ -7,15 +8,16 @@ use League\Plates\Engine;
 use Nip\View;
 use Nip\View\Traits\HasMethodsTrait;
 use Nip\View\ViewInterface;
+use function is_array;
 
 /**
- * Class LegacyLoadExtension
- * @package Nip\View\Extensions
+ * Class LegacyLoadExtension.
  */
 class LegacyLoadExtension extends AbstractExtension
 {
     /**
      * @param ViewInterface|HasMethodsTrait|View $engine
+     *
      * @return void
      */
     public function register(Engine $engine)
@@ -30,7 +32,7 @@ class LegacyLoadExtension extends AbstractExtension
             $variables = is_array($variables) ? $variables : [];
 
             $content = $engine->getContents($view, $variables);
-            if ($return === true) {
+            if (true === $return) {
                 return $content;
             }
             echo $content;

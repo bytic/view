@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Nip\View;
@@ -13,26 +14,25 @@ use Nip\View\ResolveTemplatePath\HasViewFinder;
 use Nip\View\ResolveTemplatePath\ThemeFolderResolveTemplatePath;
 
 /**
- * Class View
- *
+ * Class View.
  */
 class View extends Engine implements ViewInterface, ArrayAccess
 {
+    use HasHelpersTrait;
+    use HasViewFinder;
     use Traits\CanRenderTrait;
     use Traits\HasDataTrait;
     use Traits\HasExtensionsTrait;
-    use HasHelpersTrait;
     use Traits\HasMethodsTrait;
     use Traits\HasPathsTrait;
-    use Traits\HasRequestTrait;
 
-    use HasViewFinder;
+    use Traits\HasRequestTrait;
     use ViewLegacyTrait;
 
     protected $helpers = [];
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function __construct($directory = null, $fileExtension = 'php')
     {
@@ -43,5 +43,4 @@ class View extends Engine implements ViewInterface, ArrayAccess
         $this->setResolveTemplatePath(new ThemeFolderResolveTemplatePath($this));
         $this->initFinder();
     }
-
 }

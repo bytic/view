@@ -1,1 +1,1 @@
-<?= $this->load('header/title'); ?>
+<?= $this->load('header/title');

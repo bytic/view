@@ -1,12 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Nip\View;
 
-use Nip\View\Methods\Pipeline\MethodsPipelineBuilder as PipelineBuilder;
-
 /**
- * Interface ViewInterface
- * @package Nip\View
+ * Interface ViewInterface.
  */
 interface ViewInterface
 {

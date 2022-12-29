@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Nip\View\Extensions\Helpers;
 
 use League\Plates\Engine;
@@ -11,13 +13,13 @@ use Nip\View\Traits\MethodsOverloadingTrait;
 use Nip\View\ViewInterface;
 
 /**
- * Class HelpersExtension
- * @package Nip\View\Extensions\Helpers
+ * Class HelpersExtension.
  */
 class HelpersExtension extends AbstractExtension
 {
     /**
      * @param ViewInterface|MethodsOverloadingTrait|HasMethodsTrait|View $engine
+     *
      * @return void
      */
     public function register(Engine $engine)

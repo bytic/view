@@ -1,20 +1,23 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Nip\View\Template;
 
 use Nip\View\View;
+use function array_key_exists;
+use function is_array;
+use function is_string;
 
 /**
- * Class Template
- * @package Nip\View\Template
+ * Class Template.
  *
  * @property View $engine
  */
 class Template extends \League\Plates\Template\Template
 {
-
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function render($data = []): ?string
     {
@@ -25,6 +28,7 @@ class Template extends \League\Plates\Template\Template
         if (isset($this->sections[$data])) {
             return $this->section($data);
         }
+
         return $this->fetch($data);
     }
 
@@ -32,6 +36,7 @@ class Template extends \League\Plates\Template\Template
      * Determine if a piece of data is bound.
      *
      * @param string $key
+     *
      * @return bool
      */
     public function offsetExists($key)
@@ -43,6 +48,7 @@ class Template extends \League\Plates\Template\Template
      * Get a piece of bound data to the view.
      *
      * @param string $key
+     *
      * @return mixed
      */
     public function offsetGet($key)
@@ -55,6 +61,7 @@ class Template extends \League\Plates\Template\Template
      *
      * @param string $key
      * @param mixed $value
+     *
      * @return void
      */
     public function offsetSet($key, $value)
@@ -66,6 +73,7 @@ class Template extends \League\Plates\Template\Template
      * Unset a piece of data from the view.
      *
      * @param string $key
+     *
      * @return void
      */
     public function offsetUnset($key)
@@ -74,18 +82,16 @@ class Template extends \League\Plates\Template\Template
     }
 
     /**
-     * @param $key
      * @return mixed|null
      */
     public function &__get($key)
     {
         $var = $this->get($key);
+
         return $var;
     }
 
     /**
-     * @param $name
-     * @param $value
      * @return $this
      */
     public function __set($name, $value)
@@ -96,6 +102,7 @@ class Template extends \League\Plates\Template\Template
     /**
      * @param string $name
      * @param null $default
+     *
      * @return mixed|null
      */
     public function get($name, $default = null)
@@ -108,7 +115,6 @@ class Template extends \League\Plates\Template\Template
     }
 
     /**
-     * @param string $name
      * @return bool
      */
     public function has(string $name)
@@ -117,8 +123,8 @@ class Template extends \League\Plates\Template\Template
     }
 
     /**
-     * @param $key
      * @param null $value
+     *
      * @return $this
      */
     public function with($key, $value = null)
@@ -132,6 +138,7 @@ class Template extends \League\Plates\Template\Template
     /**
      * @param string|array $key
      * @param mixed $value
+     *
      * @return $this
      */
     public function set($key, $value)
@@ -142,7 +149,6 @@ class Template extends \League\Plates\Template\Template
     }
 
     /**
-     * @param $name
      * @return bool
      */
     public function __isset($name)
@@ -150,9 +156,6 @@ class Template extends \League\Plates\Template\Template
         return isset($this->data[$name]);
     }
 
-    /**
-     * @param $name
-     */
     public function __unset($name)
     {
         unset($this->data[$name]);
@@ -161,6 +164,7 @@ class Template extends \League\Plates\Template\Template
     /**
      * @param string $name
      * @param string $appended
+     *
      * @return $this
      */
     public function append($name, $appended)
@@ -172,9 +176,10 @@ class Template extends \League\Plates\Template\Template
     }
 
     /**
-     * Assigns variables in bulk in the current scope
+     * Assigns variables in bulk in the current scope.
      *
      * @param array $array
+     *
      * @return $this
      */
     public function assign($array = [])

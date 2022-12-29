@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Nip\View\Tests;
@@ -6,10 +7,10 @@ namespace Nip\View\Tests;
 use League\Plates\Exception\TemplateNotFound;
 use Nip\View;
 use Nip\View\Tests\Fixtures\App\View as FixturesView;
+use const DIRECTORY_SEPARATOR;
 
 /**
- * Class ViewLoadTest
- * @package Nip\View\Tests
+ * Class ViewLoadTest.
  */
 class ViewLoadTest extends AbstractTest
 {
@@ -65,7 +66,7 @@ class ViewLoadTest extends AbstractTest
         $view->getContents('template::/modules/footer');
     }
 
-    public function test_load_layout_from_view()
+    public function testLoadLayoutFromView()
     {
         $view = $this->generateView();
         $content = $view->render('/index/index_with_layout');
@@ -91,6 +92,7 @@ class ViewLoadTest extends AbstractTest
     {
         $view = new View();
         $view->setBasePath(TEST_FIXTURE_PATH . DIRECTORY_SEPARATOR . 'views');
+
         return $view;
     }
 }

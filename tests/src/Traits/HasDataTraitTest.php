@@ -1,17 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Nip\View\Tests\Traits;
 
 use Nip\View\Tests\AbstractTest;
 use Nip\View\View;
 
 /**
- * Class HasDataTraitTest
- * @package Nip\View\Tests\Traits
+ * Class HasDataTraitTest.
  */
 class HasDataTraitTest extends AbstractTest
 {
-    public function test_with_keyValue()
+    public function testWithKeyValue()
     {
         $view = new View();
         $view->with('test1', 'val1');
@@ -22,7 +23,7 @@ class HasDataTraitTest extends AbstractTest
         self::assertCount(2, $view->getData());
     }
 
-    public function test_with_Array()
+    public function testWithArray()
     {
         $view = new View();
         $view->with('test1', 'val1');

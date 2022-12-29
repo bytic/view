@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Nip\View\Extensions\RenderConditions;
@@ -6,6 +7,7 @@ namespace Nip\View\Extensions\RenderConditions;
 use League\Plates\Engine;
 use Nip\View\Extensions\AbstractExtension;
 use Nip\View\View;
+use function is_callable;
 
 class RenderConditionsExtension extends AbstractExtension
 {
@@ -18,9 +20,9 @@ class RenderConditionsExtension extends AbstractExtension
     }
 
     /**
-     * @param $view
      * @param array $variables
      * @param bool $return
+     *
      * @return bool|string|void|null
      */
     public function loadIfExists($view, $variables = [], $return = false)
@@ -29,17 +31,18 @@ class RenderConditionsExtension extends AbstractExtension
     }
 
     /**
-     * @param bool|Callable $condition
-     * @param $view
+     * @param bool|callable $condition
      * @param array $variables
+     *
      * @return bool|string|void|null
      */
     public function loadIf($condition, $view, $variables = [])
     {
         $condition = is_callable($condition) ? $condition() : $condition;
-        if ($condition == false) {
+        if (false == $condition) {
             return;
         }
+
         return $this->template->fetch($view, $variables);
     }
 
@@ -49,14 +52,15 @@ class RenderConditionsExtension extends AbstractExtension
     }
 
     /**
-     * @param $view
      * @param array $variables
      * @param bool $return
+     *
      * @return bool|string|void|null
      */
     public function loadWithFallback($view, $fallback, $variables = [], $return = false)
     {
         $view = $this->existPath($view) ? $view : $fallback;
+
         return $this->template->fetch($view, $variables, $return);
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Nip\View;
 
 use Nip\Request;
@@ -20,7 +22,7 @@ class XLS extends View
         header('Pragma: none', true);
 
         echo $this->load($view);
-        exit();
+        exit;
     }
 
     /**

@@ -1,12 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Nip\View\Helpers;
 
 use Exception;
 
 /**
- * Class DoctypeHelper
- * @package Nip\View\Helpers
+ * Class DoctypeHelper.
  */
 class DoctypeHelper extends AbstractHelper
 {
@@ -49,7 +50,9 @@ class DoctypeHelper extends AbstractHelper
 
     /**
      * @param bool $docType
+     *
      * @return $this
+     *
      * @throws Exception
      */
     public function set($docType = false)
