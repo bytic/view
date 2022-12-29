@@ -13,45 +13,6 @@ trait CanRenderTrait
 {
     protected $blocks = [];
 
-    /**
-     * @param bool|Callable $condition
-     * @param $view
-     * @param array $variables
-     * @param bool $return
-     * @return bool|string|void|null
-     */
-    public function loadIf($condition, $view, $variables = [], $return = false)
-    {
-        $condition = is_callable($condition) ? $condition() : $condition;
-        if ($condition == false) {
-            return;
-        }
-        return $this->load($view, $variables, $return);
-    }
-
-    /**
-     * @param $view
-     * @param array $variables
-     * @param bool $return
-     * @return bool|string|void|null
-     */
-    public function loadIfExists($view, $variables = [], $return = false)
-    {
-        return $this->loadIf($this->existPath($view), $view, $variables, $return);
-    }
-
-    /**
-     * @param $view
-     * @param array $variables
-     * @param bool $return
-     * @return bool|string|void|null
-     */
-    public function loadWithFallback($view, $fallback, $variables = [], $return = false)
-    {
-        $view = $this->existPath($view) ? $view : $fallback;
-        return $this->load($view, $variables, $return);
-    }
-
     /** @noinspection PhpInconsistentReturnPointsInspection
      *
      * @param $view

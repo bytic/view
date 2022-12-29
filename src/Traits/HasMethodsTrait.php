@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Nip\View\Traits;
 
@@ -25,9 +26,9 @@ trait HasMethodsTrait
 
     /**
      * @param $name
-     * @param Closure $callable
+     * @param callable $callable
      */
-    public function addMethod($name, Closure $callable)
+    public function addMethod($name, callable $callable): void
     {
         $this->registerFunction($name, $callable);
     }

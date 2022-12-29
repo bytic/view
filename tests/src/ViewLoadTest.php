@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Nip\View\Tests;
 
@@ -12,6 +13,18 @@ use Nip\View\Tests\Fixtures\App\View as FixturesView;
  */
 class ViewLoadTest extends AbstractTest
 {
+    public function testLoadWithInnerLoadIfExists()
+    {
+        $view = $this->generateView();
+
+        $content = $view->render('/index/boilerplate', ['content' => 'test']);
+
+        self::assertEquals(
+            'TITLETITLE' . "\n",
+            $content,
+        );
+    }
+
     public function testLoadWithRelativePath()
     {
         $view = $this->generateView();

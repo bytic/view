@@ -7,6 +7,7 @@ use ArrayAccess;
 use League\Plates\Engine;
 use Nip\View\Extensions\Helpers\HasHelpersTrait;
 use Nip\View\Extensions\LegacyLoadExtension;
+use Nip\View\Extensions\RenderConditions\RenderConditionsExtension;
 use Nip\View\Legacy\Traits\ViewLegacyTrait;
 use Nip\View\ResolveTemplatePath\HasViewFinder;
 use Nip\View\ResolveTemplatePath\ThemeFolderResolveTemplatePath;
@@ -38,6 +39,7 @@ class View extends Engine implements ViewInterface, ArrayAccess
         parent::__construct($directory, $fileExtension);
         $this->addHelpersExtension();
         $this->loadExtension(new LegacyLoadExtension());
+        $this->loadExtension(new RenderConditionsExtension());
         $this->setResolveTemplatePath(new ThemeFolderResolveTemplatePath($this));
         $this->initFinder();
     }
