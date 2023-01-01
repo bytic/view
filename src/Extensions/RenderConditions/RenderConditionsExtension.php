@@ -17,6 +17,7 @@ class RenderConditionsExtension extends AbstractExtension
         $engine->addMethod('loadIfExists', [$this, 'loadIfExists']);
         $engine->addMethod('loadIf', [$this, 'loadIf']);
         $engine->addMethod('loadWithFallback', [$this, 'loadWithFallback']);
+        $engine->addMethod('existPath', [$this, 'existPath']);
     }
 
     /**
@@ -46,7 +47,7 @@ class RenderConditionsExtension extends AbstractExtension
         return $this->template->fetch($view, $variables);
     }
 
-    protected function existPath($view): bool
+    public function existPath($view): bool
     {
         return $this->engine->existPath($view);
     }

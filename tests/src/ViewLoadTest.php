@@ -18,10 +18,10 @@ class ViewLoadTest extends AbstractTest
     {
         $view = $this->generateView();
 
-        $content = $view->render('/index/boilerplate', ['content' => 'test']);
+        $content = trim($view->render('/index/boilerplate', ['content' => 'test']));
 
         self::assertEquals(
-            'TITLETITLE' . "\n",
+            'TITLETITLE    ++',
             $content,
         );
     }
