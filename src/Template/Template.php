@@ -192,4 +192,12 @@ class Template extends \League\Plates\Template\Template
 
         return $this;
     }
+
+    /**
+     * @return View
+     */
+    public function getEngine(): View
+    {
+        return $this->engine;
+    }
 }
