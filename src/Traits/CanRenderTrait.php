@@ -15,7 +15,6 @@ trait CanRenderTrait
     protected $blocks = [];
 
     /** @noinspection PhpInconsistentReturnPointsInspection
-     *
      * @param array $variables
      * @param bool $return
      *
@@ -102,8 +101,10 @@ trait CanRenderTrait
      *
      * @return Template
      */
-    public function make($name)
+    public function make($name, array $data = [])
     {
-        return new \Nip\View\Template\Template($this, $name);
+        $template = new  \Nip\View\Template\Template($this, $name);
+        $template->data($data);
+        return $template;
     }
 }

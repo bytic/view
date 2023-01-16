@@ -17,7 +17,7 @@
     "bytic/helpers": "^0.9 || ^1.0 || ^2.0",
     "bytic/package-base": "^1.0",
     "bytic/pipeline": "^1.0",
-    "league/plates": "v3.x-dev#0ed15417865a1b51d6e4464f0cbbc986e9840253"
+    "league/plates": "^3.5"
   },
   "require-dev": {
     "bytic/http": "^0.9 || ^1.0",
