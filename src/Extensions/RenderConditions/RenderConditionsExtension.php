@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Nip\View\Extensions\RenderConditions;
 
 use League\Plates\Engine;
+use League\Plates\Template\Name;
 use Nip\View\Extensions\AbstractExtension;
 use Nip\View\View;
 use function is_callable;
@@ -18,6 +19,7 @@ class RenderConditionsExtension extends AbstractExtension
         $engine->addMethod('loadIf', [$this, 'loadIf']);
         $engine->addMethod('loadWithFallback', [$this, 'loadWithFallback']);
         $engine->addMethod('existPath', [$this, 'existPath']);
+        $engine->addMethod('buildPathIfExists', [$this, 'buildPathIfExists']);
     }
 
     /**
@@ -50,6 +52,16 @@ class RenderConditionsExtension extends AbstractExtension
     public function existPath($view): bool
     {
         return $this->engine->existPath($view);
+    }
+
+    public function buildPathIfExists($view)
+    {
+        if (false == $this->existPath($view)) {
+            return null;
+        }
+        $name = new Name($this->engine, $view);
+        $path = ($this->engine->getResolveTemplatePath())($name);
+        return $path;
     }
 
     /**
