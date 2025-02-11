@@ -224,7 +224,8 @@ class ThemeFolderResolveTemplatePath implements ResolveTemplatePath
      */
     protected function findInPaths($name, $paths)
     {
-        foreach ((array)$paths as $path) {
+        $paths = (array)$paths;
+        foreach ($paths as $path) {
             $file = $this->getViewFilename($name);
             $viewPath = $path . '/' . $file;
             if (file_exists($viewPath)) {

@@ -48,6 +48,7 @@ trait CanRenderTrait
      */
     public function render($name, array $data = [])
     {
+        $this->getBasePath();
         if ($this->isBlock($name)) {
             $name = '/' . $this->blocks[$name];
         }
