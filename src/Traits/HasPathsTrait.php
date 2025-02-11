@@ -33,9 +33,11 @@ trait HasPathsTrait
      */
     public function setBasePath($path)
     {
-        $path = rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
-        $this->setDirectory($path);
-        $this->getResolveTemplatePath()->prependPath($path);
+        if ($path) {
+            $path = rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
+            $this->setDirectory($path);
+            $this->getResolveTemplatePath()->prependPath($path);
+        }
 
         return $this;
     }
