@@ -15,12 +15,12 @@
     "bytic/collections": "^1.0 || ^2.0",
     "bytic/container": "^0.9 || ^1.0 || ^2.0",
     "bytic/helpers": "^0.9 || ^1.0 || ^2.0",
-    "bytic/package-base": "^1.0",
-    "bytic/pipeline": "^1.0",
+    "bytic/package-base": "^1.0|^2.0",
+    "bytic/pipeline": "^1.0|^2.0",
     "league/plates": "^3.5"
   },
   "require-dev": {
-    "bytic/http": "^0.9 || ^1.0",
+    "bytic/http": "^0.9 || ^1.0 |^2.0",
     "bytic/phpqatools": "^1.0"
   },
   "minimum-stability": "dev",
