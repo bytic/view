@@ -194,6 +194,15 @@ class Template extends \League\Plates\Template\Template
     }
 
     /**
+     * @param $block
+     * @return bool
+     */
+    public function isBlock($block = 'default'): bool
+    {
+        return $this->getEngine()->isBlock($block);
+    }
+
+    /**
      * @return View
      */
     public function getEngine(): View
