@@ -29,14 +29,14 @@
   },
   "require": {
     "php": "^7.0|^8.0",
-    "bytic/package-base": "^1.0",
+    "bytic/package-base": "^1.0|^2.0",
     "bytic/container": "^0.9|^1.0|^2.0",
-    "bytic/collections": "^1.0",
-    "bytic/helpers": "^0.9|^1.0",
-    "bytic/pipeline": "^1.0"
+    "bytic/collections": "^1.0|^2.0",
+    "bytic/helpers": "^0.9|^1.0|^2.0",
+    "bytic/pipeline": "^1.0|^2.0"
   },
   "require-dev": {
-    "bytic/http": "^0.9|^1.0",
+    "bytic/http": "^0.9|^1.0|^2.0",
     "bytic/phpqatools": "^1.0"
   },
   "prefer-stable": true,
