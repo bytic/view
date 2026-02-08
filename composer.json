@@ -23,7 +23,7 @@
     "bytic/http": "^0.9 || ^1.0 |^2.0",
     "bytic/phpqatools": "^1.0",
     "symfony/twig-bridge": "^6.0|^7.0",
-    "twig/twig": "^3.0"
+    "twig/twig": "^3.4.3"
   },
   "minimum-stability": "dev",
   "prefer-stable": true,
