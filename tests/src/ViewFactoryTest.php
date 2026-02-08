@@ -73,7 +73,12 @@ class ViewFactoryTest extends AbstractTest
     public function testCreateWithCustomFileExtension()
     {
         $factory = new ViewFactory();
-        $view = $factory->create(null, 'phtml', 'plates');
+        // Parameters: create($directory, $fileExtension, $engineType)
+        $directory = null;
+        $fileExtension = 'phtml';
+        $engineType = 'plates';
+        
+        $view = $factory->create($directory, $fileExtension, $engineType);
         
         self::assertInstanceOf(View::class, $view);
         self::assertEquals('phtml', $view->getFileExtension());

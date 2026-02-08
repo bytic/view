@@ -93,13 +93,13 @@ class ViewFactory
         }
 
         // For backward compatibility, always create the standard View instance
-        // The adapter is created internally but not used yet - this is the preparation step
+        // The adapter infrastructure is prepared but not yet integrated into View
+        // This is the preparation step - future integration will happen when View is refactored
         $view = new View($directory, $fileExtension ?? 'php');
         
-        // Store the adapter type as metadata for future use
-        // This doesn't change behavior but prepares for future transition
-        $view->engineAdapter = AdapterFactory::create($engineType, null, $options);
-
+        // The adapter can be created separately when needed in future phases
+        // For now, we just create the View with Plates as always
+        
         return $view;
     }
 
