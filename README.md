@@ -11,3 +11,39 @@ ByTIC View component
 [![Quality Score](https://img.shields.io/scrutinizer/g/bytic/view.svg?style=flat-square)](https://scrutinizer-ci.com/g/bytic/view)
 [![StyleCI](https://styleci.io/repos/118474281/shield?branch=master)](https://styleci.io/repos/118474281)
 [![Total Downloads](https://img.shields.io/packagist/dt/bytic/view.svg?style=flat-square)](https://packagist.org/packages/bytic/view)
+
+## Symfony Twig Migration
+
+This package is being prepared for a transition to Symfony Twig. The current version maintains **100% backward compatibility** with existing League Plates templates while introducing an adapter layer for future Twig support.
+
+For detailed migration information, see [TWIG_MIGRATION.md](TWIG_MIGRATION.md).
+
+### What's New
+
+- **Engine Adapter Layer**: Abstraction layer supporting both Plates and Twig
+- **Enhanced ViewFactory**: Configure default engine and create views with specific engines
+- **Backward Compatible**: All existing code continues to work without changes
+
+### Quick Start
+
+Existing code works without any changes:
+
+```php
+$view = new \Nip\View\View('/path/to/templates');
+$view->set('title', 'My Page');
+$content = $view->render('template/name');
+```
+
+New optional features for preparing Twig migration:
+
+```php
+use Nip\View\ViewFactory;
+
+$factory = new ViewFactory();
+
+// Create with default engine (Plates - backward compatible)
+$view = $factory->createWithPlates('/path/to/templates');
+
+// Or prepare for Twig (for new projects)
+$view = $factory->createWithTwig('/path/to/twig_templates');
+```
